@@ -1,6 +1,6 @@
 ﻿import { Component, Inject, Input, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-
+import { Router } from "@angular/router";
 @Component({
    selector: "quiz-list",
    templateUrl: './quiz-list.component.html',
@@ -16,7 +16,7 @@ export class QuizListComponent implements OnInit {
    baseUrl: string;
 
    constructor(http: HttpClient,
-      @Inject('BASE_URL') baseUrl: string) {
+      @Inject('BASE_URL') baseUrl: string, private router: Router) {
       this.http = http;
       this.baseUrl = baseUrl;
    }
@@ -52,6 +52,9 @@ export class QuizListComponent implements OnInit {
    onSelect(quiz: Quiz) {
       this.selectedQuiz = quiz;
       console.log("Wybrano quiz o identyfikatorze "
-         + this.selectedQuiz.Id);
+		   + this.selectedQuiz.Id + "HALO");
+	   this.router.navigate(["quiz", this.selectedQuiz.Id]);
+	 
+	   
    }
 }

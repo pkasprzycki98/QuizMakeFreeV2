@@ -25,6 +25,7 @@ import { QuizComponent } from './components/quiz/quiz.component';
       RouterModule.forRoot([
          { path: '', redirectTo: 'home', pathMatch: 'full' },
          { path: 'home', component: HomeComponent },
+		{ path: 'quiz/:id', component: QuizComponent},
          { path: '**', redirectTo: 'home' }
       ])
    ]
