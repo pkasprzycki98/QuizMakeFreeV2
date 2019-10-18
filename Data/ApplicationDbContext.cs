@@ -11,7 +11,7 @@ namespace QuizMakeFree.Data
 	{
 		#region Kontruktor
 
-		public ApplicationDbContext()
+		public ApplicationDbContext(DbContextOptions options): base(options)
 		{
 
 		}

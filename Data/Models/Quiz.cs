@@ -36,7 +36,7 @@ namespace QuizMakeFree.Data.Models
 		[Required]
 		public string UserId { get; set; }
 		[Required]
-		public string ViewCount { get; set; }
+		public int ViewCount { get; set; }
 		[Required]
 		public DateTime CreatedDate { get; set; }
 		[Required]
