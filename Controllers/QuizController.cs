@@ -48,8 +48,8 @@ namespace QuizMakeFreeWebApp.Controllers
       }
 
       
-      [HttpPut]
-      public IActionResult Put([FromBody]QuizViewModel model)
+      [HttpPost]
+      public IActionResult Post([FromBody]QuizViewModel model)
       {
 			if (model == null)
 			{
@@ -77,8 +77,8 @@ namespace QuizMakeFreeWebApp.Controllers
 
       }
 
-      [HttpPost]
-      public IActionResult Post([FromBody]QuizViewModel model)
+      [HttpPut]
+      public IActionResult Put([FromBody]QuizViewModel model)
       {
 
 			if (model == null)
