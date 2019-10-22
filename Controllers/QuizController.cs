@@ -40,7 +40,8 @@ namespace QuizMakeFreeWebApp.Controllers
 				return NotFound(new
 				{ Error = string.Format("nie znaleziono quizy o id: {0}", id) });
 			}
-			
+
+		
 			return new JsonResult(quiz.Adapt<QuizViewModel>(), new JsonSerializerSettings()
    			 {
 				Formatting = Formatting.Indented

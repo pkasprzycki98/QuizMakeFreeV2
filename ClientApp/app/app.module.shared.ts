@@ -12,13 +12,14 @@ import { QuizComponent } from './components/quiz/quiz.component';
 import { AboutComponent } from './components/about/about.component';
 import { LoginComponent } from './components/login/login.component';
 import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.component';
-
+import { QuizEditComponent } from './components/quiz/quiz-edit.component';
 @NgModule({
    declarations: [
       AppComponent,
       NavMenuComponent,
       HomeComponent,
-      QuizListComponent,
+	   QuizListComponent,
+	  QuizEditComponent,
 	  QuizComponent,
 	  AboutComponent,
 	  LoginComponent,
@@ -30,8 +31,10 @@ import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.co
       FormsModule,
       RouterModule.forRoot([
          { path: '', redirectTo: 'home', pathMatch: 'full' },
-         { path: 'home', component: HomeComponent },
-		{ path: 'quiz/:id', component: QuizComponent},
+		  { path: 'home', component: HomeComponent },
+		  { path: 'quiz/create', component: QuizEditComponent },
+		  {path: 'quiz/edit/:id',component: QuizEditComponent},
+		  { path: 'quiz/:id', component: QuizComponent },
 		  { path: 'home', component: HomeComponent},
 		  { path: 'about', component: AboutComponent },
 		  { path: 'login', component: LoginComponent },

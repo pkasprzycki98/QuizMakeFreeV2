@@ -3,30 +3,70 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using QuizMakeFreeWebApp.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
+using QuizMakeFree.Data;
+using Mapster;
+using QuizMakeFree.Data.Models;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
    [Route("api/[controller]")]
    public class QuestionController : Controller
    {
-      #region Metody dostosowujące do konwencji REST
-      
-      [HttpGet("{id}")]
+		#region pola prywatne
+
+
+		private ApplicationDbContext DbContext;
+
+		#endregion
+
+		#region kontruktor
+
+		public QuestionController(ApplicationDbContext dbContext)
+		{
+			DbContext = dbContext;
+		}
+		#endregion
+
+		#region Metody dostosowujące do konwencji REST
+
+		[HttpGet("{id}")]
       public IActionResult Get(int id)
       {
-         return Content("(Jeszcze) niezaimplementowane!");
+			var question = DbContext.Questions.Where(i => i.Id == id).FirstOrDefault();
+
+			if (question == null)
+			{
+				return NotFound(new {
+					Error = string.Format("nie znaleziono pytania o id {0}", id)
+				});
+			}
+
+			return new JsonResult(question.Adapt<QuestionViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
       }
 
       
-      [HttpPut]
-      public IActionResult Put(QuestionViewModel model)
+      [HttpPost]
+      public IActionResult Post([FromBody]QuestionViewModel model)
       {
+			if (model == null) return new StatusCodeResult(500);
+
+			var question = model.Adapt<Question>();
+
+
+			question.CreatedDate = DateTime.Now;
+			question.LastModifiedDate = question.CreatedDate;
+
+			DbContext.Questions.Add(question);
+
+			return new JsonResult(question.Adapt<QuestionViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
+
          throw new NotImplementedException();
       }
 
      
-      [HttpPost]
-      public IActionResult Post(QuestionViewModel model)
+      [HttpPut]
+      public IActionResult Put(QuestionViewModel model)
       {
          throw new NotImplementedException();
       }
