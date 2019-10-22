@@ -52,13 +52,13 @@ namespace QuizMakeFreeWebApp.Controllers
       }
       #endregion
 
-      // GET api/question/all
+      
       [HttpGet("All/{quizId}")]
       public IActionResult All(int quizId)
       {
          var sampleResults = new List<ResultViewModel>();
 
-         // Dodaj pierwszy przykładowy wynik
+        
          sampleResults.Add(new ResultViewModel()
          {
             Id = 1,
@@ -68,7 +68,7 @@ namespace QuizMakeFreeWebApp.Controllers
             LastModifiedDate = DateTime.Now
          });
 
-         // Dodaj kilka innych przykładowych wyników
+         
          for (int i = 2; i <= 5; i++)
          {
             sampleResults.Add(new ResultViewModel()
@@ -81,7 +81,7 @@ namespace QuizMakeFreeWebApp.Controllers
             });
          }
 
-         // Przekaż wyniki w formacie JSON
+        
          return new JsonResult(
              sampleResults,
              new JsonSerializerSettings()

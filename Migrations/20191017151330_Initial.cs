@@ -42,7 +42,7 @@ namespace QuizMakeFree.Migrations
                     UserId = table.Column<string>(nullable: false),
                     ViewCount = table.Column<string>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifedDate = table.Column<DateTime>(nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
                     QuizId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -68,7 +68,7 @@ namespace QuizMakeFree.Migrations
                     Type = table.Column<int>(nullable: false),
                     Flags = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifedDate = table.Column<DateTime>(nullable: false)
+                    LastModifiedDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,7 +95,7 @@ namespace QuizMakeFree.Migrations
                     Type = table.Column<int>(nullable: false),
                     Flags = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifedDate = table.Column<DateTime>(nullable: false)
+                    LastModifiedDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -121,7 +121,7 @@ namespace QuizMakeFree.Migrations
                     Type = table.Column<int>(nullable: false),
                     Flags = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifedDate = table.Column<DateTime>(nullable: false)
+                    LastModifiedDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

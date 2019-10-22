@@ -10,41 +10,27 @@ namespace QuizMakeFreeWebApp.Controllers
    public class AnswerController : Controller
    {
       #region Metody dostosowujące do konwencji REST
-      /// <summary>
-      /// Pobiera odpowiedź o podanym {id}
-      /// </summary>
-      /// <param name="id">identyfikator istniejącej odpowiedzi</param>
-      /// <returns>odpowiedź o podanym {id}</returns>
+     
       [HttpGet("{id}")]
       public IActionResult Get(int id)
       {
          return Content("(Jeszcze) niezaimplementowane!");
       }
 
-      /// <summary>
-      /// Dodaje nową odpowiedź do bazy danych
-      /// </summary>
-      /// <param name="model">obiekt AnswerViewModel z danymi do wstawienia</param>
       [HttpPut]
       public IActionResult Put(AnswerViewModel model)
       {
          throw new NotImplementedException();
       }
 
-      /// <summary>
-      /// Modyfikuje odpowiedź o podanym {id}
-      /// </summary>
-      /// <param name="model">obiekt AnswerViewModel z danymi do uaktualnienia</param>
+      
       [HttpPost]
       public IActionResult Post(AnswerViewModel model)
       {
          throw new NotImplementedException();
       }
 
-      /// <summary>
-      /// Usuwa odpowiedź o podanym {id} z bazy danych
-      /// </summary>
-      /// <param name="id">identyfikator istniejącej odpowiedzi</param>
+      
       [HttpDelete("{id}")]
       public IActionResult Delete(int id)
       {

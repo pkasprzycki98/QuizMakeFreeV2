@@ -4,155 +4,167 @@ using Newtonsoft.Json;
 using QuizMakeFreeWebApp.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using QuizMakeFree.Data;
+using Mapster;
+using QuizMakeFree.Data.Models;
+using Microsoft.Azure.KeyVault.Models;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
    [Route("api/[controller]")]
    public class QuizController : Controller
    {
-      #region Metody dostosowujące do konwencji REST
-      /// <summary>
-      /// GET: api/quiz/{}id
-      /// Pobiera quiz o podanym {id}
-      /// </summary>
-      /// <param name="id">Identyfikator istniejącego quizu</param>
-      /// <returns>Quiz o podanym {id}</returns>
-      [HttpGet("{id}")]
+
+		#region pola prywatne
+
+		private ApplicationDbContext DbContext;
+		#endregion
+
+		#region Konstuktor
+
+		public QuizController(ApplicationDbContext dbContext)
+		{
+			DbContext = dbContext;
+		}
+		#endregion
+
+		#region Metody dostosowujące do konwencji REST
+		
+		[HttpGet("{id}")]
       public IActionResult Get(int id)
       {
-         // Tworzy przykładowy quiz pasujący do żądania
-         var v = new QuizViewModel()
-         {
-            Id = id,
-            Title = String.Format("Przykładowy quiz o identyfikatorze {0}", id),
-            Description = "To nie jest prawdziwy quiz - to tylko przykład!",
-            CreatedDate = DateTime.Now,
-            LastModifiedDate = DateTime.Now
-         };
+			var quiz = DbContext.Quizzes.Where(i => i.Id == id).FirstOrDefault();
 
-         // Przekaż wyniki w formacie JSON
-         return new JsonResult(
-            v,
-            new JsonSerializerSettings()
-            {
-               Formatting = Formatting.Indented
-            });
+			if (quiz == null)
+			{
+				return NotFound(new
+				{ Error = string.Format("nie znaleziono quizy o id: {0}", id) });
+			}
+			
+			return new JsonResult(quiz.Adapt<QuizViewModel>(), new JsonSerializerSettings()
+   			 {
+				Formatting = Formatting.Indented
+		 });
       }
 
-      /// <summary>
-      /// Dodaje nowy quiz do bazy danych
-      /// </summary>
-      /// <param name="model">obiekt QuizViewModel z danymi do wstawienia</param>
+      
       [HttpPut]
-      public IActionResult Put(QuizViewModel model)
+      public IActionResult Put([FromBody]QuizViewModel model)
       {
-         throw new NotImplementedException();
+			if (model == null)
+			{
+				return new StatusCodeResult(500);
+			}
+			var quiz = new Quiz();
+
+			quiz.Title = model.Title;
+			quiz.Description = model.Description;
+			quiz.Text = model.Text;
+			quiz.Notes = model.Notes;
+
+
+			quiz.CreatedDate = DateTime.Now;
+			quiz.LastModifiedDate = quiz.CreatedDate;
+
+			quiz.UserId = DbContext.Users.Where(u => u.UserName == "Admin").FirstOrDefault().Id;
+
+			DbContext.Quizzes.Add(quiz);
+
+			DbContext.SaveChanges();
+
+			return new JsonResult(quiz.Adapt<QuizViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
+
+
       }
 
-      /// <summary>
-      /// Modyfikuje quiz o podanym {id}
-      /// </summary>
-      /// <param name="model">obiekt QuizViewModel z danymi do uaktualnienia</param>
       [HttpPost]
-      public IActionResult Post(QuizViewModel model)
+      public IActionResult Post([FromBody]QuizViewModel model)
       {
-         throw new NotImplementedException();
+
+			if (model == null)
+				return new StatusCodeResult(500);
+
+			var quiz = DbContext.Quizzes.Where(q => q.Id == model.Id).FirstOrDefault();
+
+			if (quiz == null)
+			{
+				return NotFound(new { Error = string.Format("nie znaleziono quizu o id: {0}", model.Id )
+				});
+			}
+
+			quiz.Title = model.Title;
+			quiz.Description = model.Description;
+			quiz.Notes = model.Description;
+			quiz.Text = model.Text;
+
+			quiz.LastModifiedDate = DateTime.Now;
+
+			DbContext.SaveChanges();
+
+			return new JsonResult(quiz.Adapt<QuizViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
+
+
       }
 
-      /// <summary>
-      /// Usuwa z bazy danych quiz o podanym {id}
-      /// </summary>
-      /// <param name="id">identyfikator istniejącego quizu</param>
       [HttpDelete("{id}")]
       public IActionResult Delete(int id)
       {
-         throw new NotImplementedException();
+			var quiz = DbContext.Quizzes.Where(q => q.Id == id).FirstOrDefault();
+
+			if (quiz == null)
+			{
+				return NotFound(new { Error = string.Format("nie znaleziono quizu o id: {0}", id)
+				});
+			}
+
+			DbContext.Remove(quiz);
+			DbContext.SaveChanges();
+
+			return new NoContentResult();
       }
-      #endregion
+		#endregion
 
-      #region Metody routingu bazujące na atrybutach
-      /// <summary>
-      /// GET: api/quiz/latest
-      /// Pobiera {num} najnowszych quizów
-      /// </summary>
-      /// <param name="num">liczba quizów do pobrania</param>
-      /// <returns>{num} najnowszych quizów</returns>
-      [HttpGet("Latest/{num?}")]
-      public IActionResult Latest(int num = 10)
-      {
-         var sampleQuizzes = new List<QuizViewModel>();
+		#region Metody routingu bazujące na atrybutach
 
-         // Dodaj pierwszy przykładowy quiz
-         sampleQuizzes.Add(new QuizViewModel()
-         {
-            Id = 1,
-            Title = "Którą postacią z Shingeki No Kyojin (Atak tytanów) jesteś?",
-            Description = "Test osobowości bazujący na anime",
-            CreatedDate = DateTime.Now,
-            LastModifiedDate = DateTime.Now
-         });
+		[HttpGet("Latest/{num?}")]
+		public IActionResult Latest(int num = 10)
+		{
+			var lastest = DbContext.Quizzes.OrderByDescending(q => q.CreatedDate)
+											.Take(num)
+											.ToArray();
+											
 
-         // Dodaj kilka następnych przykładowych quizów
-         for (int i = 2; i <= num; i++)
-         {
-            sampleQuizzes.Add(new QuizViewModel()
-            {
-               Id = i,
-               Title = String.Format("Przykładowy quiz {0}", i),
-               Description = "To jest przykładowy quiz",
-               CreatedDate = DateTime.Now,
-               LastModifiedDate = DateTime.Now
-            });
-         }
+			return new JsonResult(lastest.Adapt<QuizViewModel[]>(), new JsonSerializerSettings()
+			{
+				Formatting = Formatting.Indented
+			});
 
-         // Przekaż wyniki w formacie JSON
-         return new JsonResult(
-            sampleQuizzes,
-            new JsonSerializerSettings()
-            {
-               Formatting = Formatting.Indented
-            });
-      }
 
-      /// <summary>
-      /// GET: api/quiz/ByTitle
-      /// Pobiera {num} quizów posortowanych po tytule (od A do Z)
-      /// </summary>
-      /// <param name="num">liczba quizów do pobrania</param>
-      /// <returns>{num} quizów posortowanych po tytule</returns>
-      [HttpGet("ByTitle/{num:int?}")]
-      public IActionResult ByTitle(int num = 10)
-      {
-         var sampleQuizzes = ((JsonResult)Latest(num)).Value
-         as List<QuizViewModel>;
 
-         return new JsonResult(
-            sampleQuizzes.OrderBy(t => t.Title),
-            new JsonSerializerSettings()
-            {
-               Formatting = Formatting.Indented
-            });
-      }
 
-      /// <summary>
-      /// GET: api/quiz/mostViewed
-      /// Pobiera {num} losowych quizów
-      /// </summary>
-      /// <param name="num">liczba quizów do pobrania</param>
-      /// <returns>{num} losowych quizów</returns>
-      [HttpGet("Random/{num:int?}")]
-      public IActionResult Random(int num = 10)
-      {
-         var sampleQuizzes = ((JsonResult)Latest(num)).Value
-         as List<QuizViewModel>;
+		}
 
-         return new JsonResult(
-            sampleQuizzes.OrderBy(t => Guid.NewGuid()),
-            new JsonSerializerSettings()
-            {
-               Formatting = Formatting.Indented
-            });
-      }
-      #endregion
-   }
+		[HttpGet("ByTitle/{num:int?}")]
+		public IActionResult ByTitle(int num = 10)
+		{
+			var bytitle = DbContext.Quizzes.OrderBy(q => q.Title).Take(num).ToArray();
+
+			return new JsonResult(bytitle.Adapt<QuizViewModel[]>(), new JsonSerializerSettings()
+			{
+				Formatting = Formatting.Indented
+			});
+		}
+
+		[HttpGet("Random/{num:int?}")]
+		public IActionResult Random(int num = 10)
+		{
+
+			var random = DbContext.Quizzes.OrderBy(q => Guid.NewGuid()).Take(num).ToArray();
+			return new JsonResult(random.Adapt<QuizViewModel[]>(), new JsonSerializerSettings()
+			{
+				Formatting = Formatting.Indented
+			});
+		}
+		#endregion
+	}
 }

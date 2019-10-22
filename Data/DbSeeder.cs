@@ -115,7 +115,7 @@ namespace QuizMakeFree.Data
 				"Jeśli chcesz zostać prawdziwym JEDI, nie możesz pominąć takiej szansy!",
 				ViewCount = 2343,
 				CreatedDate = dateTime,
-				LastModifedDate = lastModifiedDate
+				LastModifiedDate = lastModifiedDate
 
 			});
 
@@ -130,7 +130,7 @@ namespace QuizMakeFree.Data
 						"Oto kilka pytań, które pozwolą Ci tego dowiedzieć",
 				ViewCount = 4180,
 				CreatedDate = dateTime,
-				LastModifedDate = lastModifiedDate,
+				LastModifiedDate = lastModifiedDate,
 
 
 			});
@@ -147,7 +147,7 @@ namespace QuizMakeFree.Data
 						"Odkryj prawdziewgo siebie dzięki temu testowi osobwości bazującemu na Ataku tytanów!",
 				ViewCount = 5203,
 				CreatedDate = dateTime,
-				LastModifedDate = lastModifiedDate
+				LastModifiedDate = lastModifiedDate
 
 			});
 
@@ -178,7 +178,7 @@ namespace QuizMakeFree.Data
 						"Wszystkie pytania, odpowiedzi i wyniki również zostały wygenerowane automatycznie",
 				ViewCount = ViewCount,
 				CreatedDate = createdDate,
-				LastModifedDate = createdDate
+				LastModifiedDate = createdDate
 
 
 			};
@@ -193,7 +193,7 @@ namespace QuizMakeFree.Data
 					Text = "To jest przykładowe pytanie utworzone przez klasę DbSeeder w celach testowych." +
 							"Wszystkie odpowiedzi do pytania również są wygenerowane automatycznie.",
 					CreatedDate = createdDate,
-					LastModifedDate = createdDate
+					LastModifiedDate = createdDate
 				};
 
 				dbContext.Questions.Add(question);
@@ -208,7 +208,7 @@ namespace QuizMakeFree.Data
 						Text = "To jest przykładowa odpowiedź utworzona przez klasę DbSeeder w celach testowych",
 						Value = i2,
 						CreatedDate = createdDate,
-						LastModifedDate = createdDate
+						LastModifiedDate = createdDate
 					});
 				}
 				
@@ -225,7 +225,7 @@ namespace QuizMakeFree.Data
 					MinValue = 0,
 					MaxValue = numberOfAnswerPerQuestion * 2,
 					CreatedDate = createdDate,
-					LastModifedDate = createdDate,
+					LastModifiedDate = createdDate,
 				});
 			}
 

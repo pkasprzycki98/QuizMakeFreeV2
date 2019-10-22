@@ -40,7 +40,7 @@ namespace QuizMakeFree.Data.Models
 		[Required]
 		public DateTime CreatedDate { get; set; }
 		[Required]
-		public DateTime LastModifedDate { get; set; }
+		public DateTime LastModifiedDate { get; set; }
 		#endregion
 
 		#region Właściowości wczytywane lazyLoading

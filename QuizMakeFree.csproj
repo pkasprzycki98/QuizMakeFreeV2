@@ -8,6 +8,7 @@
   </PropertyGroup>
    
   <ItemGroup>
+    <PackageReference Include="mapster" Version="4.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" PrivateAssets="All" />
      <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" /> 
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.2" />
