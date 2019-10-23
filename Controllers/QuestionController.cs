@@ -59,56 +59,72 @@ namespace QuizMakeFreeWebApp.Controllers
 
 			DbContext.Questions.Add(question);
 
+			DbContext.SaveChanges();
+
 			return new JsonResult(question.Adapt<QuestionViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
 
-         throw new NotImplementedException();
       }
 
      
       [HttpPut]
-      public IActionResult Put(QuestionViewModel model)
+      public IActionResult Put([FromBody]QuestionViewModel model)
       {
-         throw new NotImplementedException();
+			if (model == null)
+			{
+				return new StatusCodeResult(500);
+			}
+
+			var question = DbContext.Questions.Where(q => q.Id == model.Id).FirstOrDefault();
+
+			if (question == null)
+			{
+				return NotFound(new
+				{
+					Error = string.Format("nie znaleziono pytania o id {0}", model.Id)
+				});
+			}
+
+			question.QuizId = model.QuizId;
+			question.Text = model.Text;
+			question.Notes = model.Notes;
+			question.LastModifiedDate = DateTime.Now;
+
+			DbContext.SaveChanges();
+
+			return new JsonResult(question.Adapt<QuestionViewModel>(), new JsonSerializerSettings()
+			{
+				Formatting = Formatting.Indented
+			});
       }
 
       [HttpDelete("{id}")]
       public IActionResult Delete(int id)
       {
-         throw new NotImplementedException();
+			var question = DbContext.Questions.Where(q => q.Id == id).FirstOrDefault();
+
+			if (question == null)
+			{
+				return NotFound(new
+				{
+					Error = string.Format("Nie znaleziono pytania o id {0}", id)
+				});
+			}
+
+			DbContext.Questions.Remove(question);
+
+			DbContext.SaveChanges();
+
+			return new NoContentResult();
       }
+
       #endregion
 
       [HttpGet("All/{quizId}")]
       public IActionResult All(int quizId)
       {
-         var sampleQuestions = new List<QuestionViewModel>();
-
+			var question = DbContext.Questions.Where(q => q.QuizId == quizId).ToArray();
         
-         sampleQuestions.Add(new QuestionViewModel()
-         {
-            Id = 1,
-            QuizId = quizId,
-            Text = "Co cenisz w swoim życiu najbardziej?",
-            CreatedDate = DateTime.Now,
-            LastModifiedDate = DateTime.Now
-         });
-
-        
-         for (int i = 2; i <= 5; i++)
-         {
-            sampleQuestions.Add(new QuestionViewModel()
-            {
-               Id = i,
-               QuizId = quizId,
-               Text = String.Format("Przykładowe pytanie {0}", i),
-               CreatedDate = DateTime.Now,
-               LastModifiedDate = DateTime.Now
-            });
-         }
-
-        
-         return new JsonResult(
-             sampleQuestions,
+         return new JsonResult(question.Adapt<QuestionViewModel[]>(),
              new JsonSerializerSettings()
              {
                 Formatting = Formatting.Indented

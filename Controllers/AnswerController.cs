@@ -3,73 +3,146 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using QuizMakeFreeWebApp.ViewModels;
 using System.Collections.Generic;
+using Mapster;
+using QuizMakeFree.Data;
+using System.Linq;
+using QuizMakeFree.Data.Models;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
    [Route("api/[controller]")]
    public class AnswerController : Controller
    {
-      #region Metody dostosowujące do konwencji REST
-     
-      [HttpGet("{id}")]
+		#region pola prywatne
+
+		private ApplicationDbContext DbContext;
+		#endregion
+
+		#region Kontruktor
+
+		public AnswerController(ApplicationDbContext dbcontext)
+		{
+			DbContext = dbcontext;	
+		}
+
+
+		#endregion
+
+		#region Metody dostosowujące do konwencji REST
+
+		[HttpGet("{id}")]
       public IActionResult Get(int id)
       {
-         return Content("(Jeszcze) niezaimplementowane!");
+			var answer = DbContext.Answers.Where(a => a.Id == id).FirstOrDefault();
+
+			if (answer == null)
+			{
+				return NotFound(new
+				{
+					Error = string.Format("nie znaleziono pytania o id {0}", id)
+				});
+			}
+
+			return new JsonResult(answer.Adapt<AnswerViewModel>(), new JsonSerializerSettings
+			{
+				Formatting = Formatting.Indented
+			});
+
       }
 
-      [HttpPut]
-      public IActionResult Put(AnswerViewModel model)
+		[HttpPost]
+		public IActionResult Post([FromBody]AnswerViewModel model)
+		{
+			if (model == null)
+			{
+				return new StatusCodeResult(500);
+			}
+
+			var answer = model.Adapt<Answer>();
+
+			answer.CreatedDate = DateTime.Now;
+			answer.LastModifiedDate = answer.CreatedDate;
+
+			DbContext.Answers.Add(answer);
+
+			DbContext.SaveChanges();
+
+			return new JsonResult(answer.Adapt<AnswerViewModel>(), new JsonSerializerSettings()
+			{
+				Formatting = Formatting.Indented
+			});
+
+		}
+
+
+		[HttpPut]
+      public IActionResult Put([FromBody]AnswerViewModel model)
       {
-         throw new NotImplementedException();
+			if (model == null)
+				return new StatusCodeResult(500);
+
+			var answer = DbContext.Answers.Where(a => a.Id == model.Id).FirstOrDefault();
+
+
+			if (answer == null)
+			{
+				return NotFound(new
+				{
+					Error = string.Format("nie znaleziono odpowiedzi o id {0}", model.Id)
+				});
+			}
+
+			answer.QuestionId = model.QuestionId;
+			answer.Text = model.Text;
+			answer.Value = model.Value;
+			answer.Notes = model.Notes;
+
+			answer.LastModifiedDate = DateTime.Now;
+
+			DbContext.SaveChanges();
+
+			return new JsonResult(answer.Adapt<AnswerViewModel>(), new JsonSerializerSettings()
+			{
+				Formatting = Formatting.Indented
+			});
+
+
+
       }
 
       
-      [HttpPost]
-      public IActionResult Post(AnswerViewModel model)
-      {
-         throw new NotImplementedException();
-      }
-
+      
       
       [HttpDelete("{id}")]
       public IActionResult Delete(int id)
       {
-         throw new NotImplementedException();
-      }
+			var answer = DbContext.Answers.Where(a => a.Id == id).FirstOrDefault();
+
+			if (answer == null)
+			{
+				return NotFound(new
+				{
+					Error = string.Format("Nie znaleziono odpowiedzi o id {0}", id)
+				});
+			}
+
+
+			DbContext.Answers.Remove(answer);
+			DbContext.SaveChanges();
+
+			return new JsonResult(answer.Adapt<AnswerViewModel>(), new JsonSerializerSettings() { Formatting = Formatting.Indented });
+		}
       #endregion
 
       // GET api/answer/all
       [HttpGet("All/{questionId}")]
       public IActionResult All(int questionId)
       {
-         var sampleAnswers = new List<AnswerViewModel>();
-
-         // Dodaj pierwszą przykładową odpowiedź
-         sampleAnswers.Add(new AnswerViewModel()
-         {
-            Id = 1,
-            QuestionId = questionId,
-            Text = "Przyjaciół i rodzinę",
-            CreatedDate = DateTime.Now,
-            LastModifiedDate = DateTime.Now
-         });
-
-         // Dodaj kilka następnych przykładowych odpowiedzi
-         for (int i = 2; i <= 5; i++)
-         {
-            sampleAnswers.Add(new AnswerViewModel()
-            {
-               Id = i,
-               QuestionId = questionId,
-               Text = String.Format("Przykładowa odpowiedź {0}", i),
-               CreatedDate = DateTime.Now,
-               LastModifiedDate = DateTime.Now
-            });
-         }
+			var answers = DbContext.Answers.Where(a => a.QuestionId == questionId).ToArray();
 
          // Przekaż wyniki w formacie JSON
          return new JsonResult(
-             sampleAnswers,
+             answers.Adapt<AnswerViewModel>(),
              new JsonSerializerSettings()
              {
                 Formatting = Formatting.Indented
