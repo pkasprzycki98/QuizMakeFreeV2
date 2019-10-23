@@ -8,23 +8,20 @@ using QuizMakeFree.Data;
 using Mapster;
 using QuizMakeFree.Data.Models;
 using Microsoft.Azure.KeyVault.Models;
+using QuizMakeFree.Controllers;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
-   [Route("api/[controller]")]
-   public class QuizController : Controller
-   {
+	public class QuizController : BaseApiController
+	{
 
-		#region pola prywatne
-
-		private ApplicationDbContext DbContext;
-		#endregion
+		
 
 		#region Konstuktor
 
-		public QuizController(ApplicationDbContext dbContext)
+		public QuizController(ApplicationDbContext dbContext) : base(dbContext)
 		{
-			DbContext = dbContext;
+
 		}
 		#endregion
 
@@ -73,7 +70,7 @@ namespace QuizMakeFreeWebApp.Controllers
 
 			DbContext.SaveChanges();
 
-			return new JsonResult(quiz.Adapt<QuizViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
+			return new JsonResult(quiz.Adapt<QuizViewModel>(), JsonSettings);
 
 
       }
@@ -102,7 +99,7 @@ namespace QuizMakeFreeWebApp.Controllers
 
 			DbContext.SaveChanges();
 
-			return new JsonResult(quiz.Adapt<QuizViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
+			return new JsonResult(quiz.Adapt<QuizViewModel>(), JsonSettings);
 
 
       }
@@ -135,10 +132,7 @@ namespace QuizMakeFreeWebApp.Controllers
 											.ToArray();
 											
 
-			return new JsonResult(lastest.Adapt<QuizViewModel[]>(), new JsonSerializerSettings()
-			{
-				Formatting = Formatting.Indented
-			});
+			return new JsonResult(lastest.Adapt<QuizViewModel[]>(), JsonSettings);
 
 
 
@@ -150,10 +144,7 @@ namespace QuizMakeFreeWebApp.Controllers
 		{
 			var bytitle = DbContext.Quizzes.OrderBy(q => q.Title).Take(num).ToArray();
 
-			return new JsonResult(bytitle.Adapt<QuizViewModel[]>(), new JsonSerializerSettings()
-			{
-				Formatting = Formatting.Indented
-			});
+			return new JsonResult(bytitle.Adapt<QuizViewModel[]>(), JsonSettings);
 		}
 
 		[HttpGet("Random/{num:int?}")]
@@ -161,10 +152,7 @@ namespace QuizMakeFreeWebApp.Controllers
 		{
 
 			var random = DbContext.Quizzes.OrderBy(q => Guid.NewGuid()).Take(num).ToArray();
-			return new JsonResult(random.Adapt<QuizViewModel[]>(), new JsonSerializerSettings()
-			{
-				Formatting = Formatting.Indented
-			});
+			return new JsonResult(random.Adapt<QuizViewModel[]>(), JsonSettings);
 		}
 		#endregion
 	}

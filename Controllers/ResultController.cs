@@ -7,22 +7,20 @@ using QuizMakeFree.Data;
 using Mapster;
 using QuizMakeFree.Data.Models;
 using System.Linq;
+using QuizMakeFree.Controllers;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
    [Route("api/[controller]")]
-   public class ResultController : Controller
+   public class ResultController : BaseApiController
    {
-		#region wlasciwosci prywatne
-		private ApplicationDbContext DbContext;
-
-	#endregion
+		
 
 		#region kontruktor
 
-		public ResultController(ApplicationDbContext dbContext)
+		public ResultController(ApplicationDbContext dbContext) : base(dbContext)
 		{
-			DbContext = dbContext;
+			
 		}
 		#endregion
 
@@ -41,7 +39,7 @@ namespace QuizMakeFreeWebApp.Controllers
 				});
 			}
 
-			return new JsonResult(results.Adapt<ResultViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
+			return new JsonResult(results.Adapt<ResultViewModel>(), JsonSettings);
 		}
 
 
@@ -60,7 +58,7 @@ namespace QuizMakeFreeWebApp.Controllers
 
 			DbContext.SaveChanges();
 
-			return new JsonResult(result.Adapt<ResultViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
+			return new JsonResult(result.Adapt<ResultViewModel>(), JsonSettings);
 
 		}
 
@@ -92,10 +90,7 @@ namespace QuizMakeFreeWebApp.Controllers
 
 			DbContext.SaveChanges();
 
-			return new JsonResult(result.Adapt<ResultViewModel>(), new JsonSerializerSettings()
-			{
-				Formatting = Formatting.Indented
-			});
+			return new JsonResult(result.Adapt<ResultViewModel>(), JsonSettings);
 		}
 
 		[HttpDelete("{id}")]
@@ -125,11 +120,7 @@ namespace QuizMakeFreeWebApp.Controllers
 		{
 			var result = DbContext.Results.Where(q => q.QuizId == quizId).ToArray();
 
-			return new JsonResult(result.Adapt<ResultViewModel[]>(),
-				new JsonSerializerSettings()
-				{
-					Formatting = Formatting.Indented
-				});
+			return new JsonResult(result.Adapt<ResultViewModel[]>(),JsonSettings);
 		}
 	}
 }

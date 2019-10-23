@@ -7,22 +7,20 @@ using Mapster;
 using QuizMakeFree.Data;
 using System.Linq;
 using QuizMakeFree.Data.Models;
+using QuizMakeFree.Controllers;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
    [Route("api/[controller]")]
-   public class AnswerController : Controller
+   public class AnswerController : BaseApiController
    {
-		#region pola prywatne
-
-		private ApplicationDbContext DbContext;
-		#endregion
+		
 
 		#region Kontruktor
 
-		public AnswerController(ApplicationDbContext dbcontext)
+		public AnswerController(ApplicationDbContext dbcontext) : base(dbcontext)
 		{
-			DbContext = dbcontext;	
+			
 		}
 
 
@@ -43,10 +41,7 @@ namespace QuizMakeFreeWebApp.Controllers
 				});
 			}
 
-			return new JsonResult(answer.Adapt<AnswerViewModel>(), new JsonSerializerSettings
-			{
-				Formatting = Formatting.Indented
-			});
+			return new JsonResult(answer.Adapt<AnswerViewModel>(), JsonSettings);
 
       }
 
@@ -67,10 +62,7 @@ namespace QuizMakeFreeWebApp.Controllers
 
 			DbContext.SaveChanges();
 
-			return new JsonResult(answer.Adapt<AnswerViewModel>(), new JsonSerializerSettings()
-			{
-				Formatting = Formatting.Indented
-			});
+			return new JsonResult(answer.Adapt<AnswerViewModel>(), JsonSettings);
 
 		}
 
@@ -101,10 +93,7 @@ namespace QuizMakeFreeWebApp.Controllers
 
 			DbContext.SaveChanges();
 
-			return new JsonResult(answer.Adapt<AnswerViewModel>(), new JsonSerializerSettings()
-			{
-				Formatting = Formatting.Indented
-			});
+			return new JsonResult(answer.Adapt<AnswerViewModel>(), JsonSettings);
 
 
 
@@ -130,7 +119,7 @@ namespace QuizMakeFreeWebApp.Controllers
 			DbContext.Answers.Remove(answer);
 			DbContext.SaveChanges();
 
-			return new JsonResult(answer.Adapt<AnswerViewModel>(), new JsonSerializerSettings() { Formatting = Formatting.Indented });
+			return new JsonResult(answer.Adapt<AnswerViewModel>(), JsonSettings);
 		}
       #endregion
 
@@ -141,12 +130,7 @@ namespace QuizMakeFreeWebApp.Controllers
 			var answers = DbContext.Answers.Where(a => a.QuestionId == questionId).ToArray();
 
          // Przekaż wyniki w formacie JSON
-         return new JsonResult(
-             answers.Adapt<AnswerViewModel>(),
-             new JsonSerializerSettings()
-             {
-                Formatting = Formatting.Indented
-             });
+         return new JsonResult(answers.Adapt<AnswerViewModel>(),JsonSettings);
       }
    }
 }

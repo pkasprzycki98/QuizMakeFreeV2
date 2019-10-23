@@ -7,24 +7,19 @@ using System.Linq;
 using QuizMakeFree.Data;
 using Mapster;
 using QuizMakeFree.Data.Models;
+using QuizMakeFree.Controllers;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
    [Route("api/[controller]")]
-   public class QuestionController : Controller
+   public class QuestionController : BaseApiController
    {
-		#region pola prywatne
-
-
-		private ApplicationDbContext DbContext;
-
-		#endregion
+		
 
 		#region kontruktor
 
-		public QuestionController(ApplicationDbContext dbContext)
-		{
-			DbContext = dbContext;
+		public QuestionController(ApplicationDbContext dbContext) : base(dbContext)
+		{		
 		}
 		#endregion
 
@@ -42,7 +37,7 @@ namespace QuizMakeFreeWebApp.Controllers
 				});
 			}
 
-			return new JsonResult(question.Adapt<QuestionViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
+			return new JsonResult(question.Adapt<QuestionViewModel>(), JsonSettings);
       }
 
       
@@ -61,7 +56,7 @@ namespace QuizMakeFreeWebApp.Controllers
 
 			DbContext.SaveChanges();
 
-			return new JsonResult(question.Adapt<QuestionViewModel>(), new JsonSerializerSettings { Formatting = Formatting.Indented });
+			return new JsonResult(question.Adapt<QuestionViewModel>(), JsonSettings);
 
       }
 
@@ -91,10 +86,7 @@ namespace QuizMakeFreeWebApp.Controllers
 
 			DbContext.SaveChanges();
 
-			return new JsonResult(question.Adapt<QuestionViewModel>(), new JsonSerializerSettings()
-			{
-				Formatting = Formatting.Indented
-			});
+			return new JsonResult(question.Adapt<QuestionViewModel>(), JsonSettings);
       }
 
       [HttpDelete("{id}")]
@@ -124,11 +116,7 @@ namespace QuizMakeFreeWebApp.Controllers
       {
 			var question = DbContext.Questions.Where(q => q.QuizId == quizId).ToArray();
         
-         return new JsonResult(question.Adapt<QuestionViewModel[]>(),
-             new JsonSerializerSettings()
-             {
-                Formatting = Formatting.Indented
-             });
+         return new JsonResult(question.Adapt<QuestionViewModel[]>(),JsonSettings);
       }
    }
 }
