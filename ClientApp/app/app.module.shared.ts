@@ -13,14 +13,25 @@ import { AboutComponent } from './components/about/about.component';
 import { LoginComponent } from './components/login/login.component';
 import { PageNotFoundComponent } from './components/pagenotfound/pagenotfound.component';
 import { QuizEditComponent } from './components/quiz/quiz-edit.component';
+import { QuestionListComponent } from './components/question/question-list.component';
+import { QuestionEditComponent } from './components/question/question-edit.component';
+import { AnswerListComponent } from './components/answer/answer-list.compnent';
+import { AnswerEditComponent } from './components/answer/answer-edit.component';
+import { ResultListComponent } from './components/result/result-list.component';
+
 @NgModule({
    declarations: [
       AppComponent,
       NavMenuComponent,
       HomeComponent,
-	   QuizListComponent,
+	  QuizListComponent,
 	  QuizEditComponent,
 	  QuizComponent,
+	  QuestionListComponent,
+	  QuestionEditComponent,
+	  AnswerListComponent,
+	  AnswerEditComponent,
+	  ResultListComponent,
 	  AboutComponent,
 	  LoginComponent,
 	  PageNotFoundComponent
@@ -35,6 +46,10 @@ import { QuizEditComponent } from './components/quiz/quiz-edit.component';
 		  { path: 'quiz/create', component: QuizEditComponent },
 		  {path: 'quiz/edit/:id',component: QuizEditComponent},
 		  { path: 'quiz/:id', component: QuizComponent },
+		  {path: 'question/create/:id', component: QuestionEditComponent},
+		  { path: 'question/edit/:id', component: QuestionEditComponent },
+		  { path: 'answer/create/:id', component: AnswerEditComponent },
+		  { path: 'answer/edit/:id', component: AnswerEditComponent },
 		  { path: 'home', component: HomeComponent},
 		  { path: 'about', component: AboutComponent },
 		  { path: 'login', component: LoginComponent },

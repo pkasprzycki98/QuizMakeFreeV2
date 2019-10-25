@@ -130,7 +130,7 @@ namespace QuizMakeFreeWebApp.Controllers
 			var answers = DbContext.Answers.Where(a => a.QuestionId == questionId).ToArray();
 
          // Przekaż wyniki w formacie JSON
-         return new JsonResult(answers.Adapt<AnswerViewModel>(),JsonSettings);
+         return new JsonResult(answers.Adapt<AnswerViewModel[]>(),JsonSettings);
       }
    }
 }

@@ -35,16 +35,32 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\about\about.component.ts" />
+    <None Remove="ClientApp\app\components\answer\answer-edit.component.ts" />
+    <None Remove="ClientApp\app\components\answer\answer-list.compnent.ts" />
     <None Remove="ClientApp\app\components\login\login.component.ts" />
     <None Remove="ClientApp\app\components\pagenotfound\pagenotfound.component.ts" />
+    <None Remove="ClientApp\app\components\question\question-edit.component.ts" />
+    <None Remove="ClientApp\app\components\question\question-list.component.ts" />
     <None Remove="ClientApp\app\components\quiz\quiz-edit.component.ts" />
+    <None Remove="ClientApp\app\components\result\result-list.component.ts" />
+    <None Remove="ClientApp\app\interfaces\answer.ts" />
+    <None Remove="ClientApp\app\interfaces\question.ts" />
+    <None Remove="ClientApp\app\interfaces\result.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\about\about.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\answer\answer-list.compnent.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\answer\answer-edit.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\pagenotfound\pagenotfound.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\question\question-edit.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\question\question-list.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\quiz\quiz-edit.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\result\result-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\interfaces\answer.ts" />
+    <TypeScriptCompile Include="ClientApp\app\interfaces\question.ts" />
+    <TypeScriptCompile Include="ClientApp\app\interfaces\result.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
