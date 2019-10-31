@@ -41,7 +41,7 @@ export class QuestionEditComponent {
 		}
 	}
 
-	onSubmite(question: Question) {
+	onSubmit(question: Question) {
 		var url = this.baseUrl + "api/question";
 
 		if (this.editMode) {
