@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 
 	selector: "result-edit",
 	templateUrl: './result-edit.component.html',
-	styleUrls: ['./result-edit.component.css']
+	styleUrls: ['./result-edit.component.less']
 
 })
 
@@ -42,7 +42,7 @@ export class ResultEditComponent {
 		}
 	}
 
-	onSubmite(result: Result) {
+	onSubmit(result: Result) {
 		var url = this.baseUrl + "api/result";
 
 		if (this.editMode) {

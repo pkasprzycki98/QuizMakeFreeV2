@@ -7,7 +7,7 @@ import { resetFakeAsyncZone } from '@angular/core/testing';
 
 	selector: "quiz-edit",
 	templateUrl: './quiz-edit.component.html',
-	styleUrls: ['./quiz-edit.component.css']
+	styleUrls: ['./quiz-edit.component.less']
 })
 
 export class QuizEditComponent {

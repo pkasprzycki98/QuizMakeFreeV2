@@ -20,8 +20,8 @@
 
 
 	<div>
-		<input *ngIf="editMode" type="button" value="Zapisz zmiany" (click)="onSubmit(question)" />
-		<input *ngIf="!editMode" type="button" value="Utwórz pytanie!" (click)="onSubmit(question)" />
+		<input *ngIf="editMode" type="button" value="Zapisz zmiany" (click)="onSubmit(result)" />
+		<input *ngIf="!editMode" type="button" value="Utwórz wynik!" (click)="onSubmit(result)" />
 		<input type="button" value="Anuluj" (click)="onBack()" />
 	</div>
 
