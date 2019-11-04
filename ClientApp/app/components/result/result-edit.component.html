@@ -1,30 +1,37 @@
 ﻿<h2>{{title}}</h2>
 <div class="result-edit">
-	<div>
-		<label for="text">Treść wyniku:</label>
-		<br />
-		<textarea id="text" [(ngModel)]="result.Text" placeholder="Wpisz odpowiednią treść..."></textarea>
-	</div>
+   <div class="form-group">
+      <label for="text">Treść wyniku:</label>
+      <br />
+      <textarea id="text" [(ngModel)]="result.Text" placeholder="Wpisz odpowiednią treść..."></textarea>
+   </div>
 
-	<div>
-		<label for="MinValue">Minimalna wartość punktowa:</label>
-		<br />
-		<input type="number" id="MinValue" name="MinValue" [(ngModel)]="result.MinValue" />
-	</div>
+   <div class="form-group">
+      <label for="MinValue">Minimalna wartość punktowa:</label>
+      <br />
+      <input type="number" id="MinValue" name="MinValue"
+             [(ngModel)]="result.MinValue" />
+   </div>
 
-	<div>
-		<label for="MaxValue">Maksymalna wartość punktowa:</label>
-		<br />
-		<input type="number" id="MaxValue" name="MaxValue" [(ngModel)]="result.MaxValue" />
-	</div>
+   <div class="form-group">
+      <label for="MaxValue">Maksymalna wartość punktowa:</label>
+      <br />
+      <input type="number" id="MaxValue" name="MaxValue"
+             [(ngModel)]="result.MaxValue" />
+   </div>
 
-
-	<div>
-		<input *ngIf="editMode" type="button" value="Zapisz zmiany" (click)="onSubmit(result)" />
-		<input *ngIf="!editMode" type="button" value="Utwórz wynik!" (click)="onSubmit(result)" />
-		<input type="button" value="Anuluj" (click)="onBack()" />
-	</div>
-
-	
+   <div class="commands">
+      <input *ngIf="editMode" type="button"
+             value="Zastosuj zmiany"
+             (click)="onSubmit(result)"
+             class="btn btn-success" />
+      <input *ngIf="!editMode" type="button"
+             value="Utwórz wynik!"
+             (click)="onSubmit(result)"
+             class="btn btn-success" />
+      <input type="button" value="Anuluj"
+             (click)="onBack()"
+             class="btn btn-default" />
+   </div>
 
 </div>

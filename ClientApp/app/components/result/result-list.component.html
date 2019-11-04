@@ -1,34 +1,42 @@
 ﻿<h3>Wyniki</h3>
 <div *ngIf="results.length > 0">
-	<table class="results">
-		<thead>
-			<tr>
-				<th>Treść</th>
-				<th>Wartość min.</th>
-				<th>Wartość maks.</th>
-				<th>Akcje</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let result of results">
-				<td>{{result.Text}}</td>
-				<td *ngIf="result.MinValue === null">niedostępna</td>
-				<td *ngIf="result.MinValue !== null">{{result.MinValue}}</td>
-				<td *ngIf="result.MaxValue === null">niedostępna</td>
-				<td *ngIf="result.MaxValue !== null">{{result.MaxValue}}</td>
-				<td>
-					<input type="button" value="Edytuj"
-						   (click)="onEdit(result)" />
-					<input type="button" value="Usuń"
-						   (click)="onDelete(result)" />
-				</td>
-			</tr>
-		</tbody>
-	</table>
+   <div class="table-responsive">
+      <table class="table table-hover results">
+         <thead>
+            <tr>
+               <th>Treść</th>
+               <th>Wartość min.</th>
+               <th>Wartość maks.</th>
+               <th>Akcje</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr *ngFor="let result of results">
+               <td>{{result.Text}}</td>
+               <td *ngIf="result.MinValue === null">niedostępna</td>
+               <td *ngIf="result.MinValue !== null">{{result.MinValue}}</td>
+               <td *ngIf="result.MaxValue === null">niedostępna</td>
+               <td *ngIf="result.MaxValue !== null">{{result.MaxValue}}</td>
+               <td>
+                  <input type="button"
+                         value="Edytuj"
+                         (click)="onEdit(result)"
+                         class="btn btn-sm btn-warning" />
+                  <input type="button"
+                         value="Usuń"
+                         (click)="onDelete(result)"
+                         class="btn btn-sm btn-danger" />
+               </td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
 </div>
-<div *ngIf="results.length == 0">
-	Ten quiz nie ma (jeszcze) wyniku:
-	kliknij <strong>Dodaj wynik</strong>, aby dodać pierwszy wynik!
+<div *ngIf="results.length == 0" class="help-block">
+   Ten quiz nie ma (jeszcze) wyniku:
+   kliknij <strong>Dodaj wynik</strong>, aby dodać pierwszy wynik!
 </div>
-<input type="button" value="Dodaj wynik" (click)="onCreate()" />
-
+<button (click)="onCreate()" class="btn btn-sm btn-primary">
+   <span class="glyphicon glyphicon-plus"></span>
+   &nbsp; Dodaj wynik
+</button>
