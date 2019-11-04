@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 
 	selector: "result-edit",
 	templateUrl: './result-edit.component.html',
-	styleUrls: ['./result-edit.component.less']
+	styleUrls: ['./result-edit.component.css']
 
 })
 

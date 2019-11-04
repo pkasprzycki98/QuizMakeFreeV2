@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 @Component({
    selector: "quiz-list",
    templateUrl: './quiz-list.component.html',
-   styleUrls: ['./quiz-list.component.less']
+   styleUrls: ['./quiz-list.component.css']
 })
 
 export class QuizListComponent implements OnInit {
