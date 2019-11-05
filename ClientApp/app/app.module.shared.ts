@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -20,6 +20,7 @@ import { AnswerEditComponent } from './components/answer/answer-edit.component';
 import { ResultListComponent } from './components/result/result-list.component';
 import { ResultEditComponent } from './components/result/result-edit.component';
 import { QuizSearchComponent } from './components/quiz/quiz-search.component';
+
 
 @NgModule({
    declarations: [
@@ -43,7 +44,8 @@ import { QuizSearchComponent } from './components/quiz/quiz-search.component';
    imports: [
       CommonModule,
       HttpClientModule,
-      FormsModule,
+	   FormsModule,
+	   ReactiveFormsModule,
       RouterModule.forRoot([
          { path: '', redirectTo: 'home', pathMatch: 'full' },
 		  { path: 'home', component: HomeComponent },

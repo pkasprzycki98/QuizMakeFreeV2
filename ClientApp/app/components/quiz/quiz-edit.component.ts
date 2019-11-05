@@ -1,7 +1,7 @@
 ﻿import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { resetFakeAsyncZone } from '@angular/core/testing';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
 
@@ -13,15 +13,16 @@ import { resetFakeAsyncZone } from '@angular/core/testing';
 export class QuizEditComponent {
 	title: string;
 	quiz: Quiz;
-
+	form: FormGroup;
 	editMode: boolean;
 
 	constructor(private activatedRoute: ActivatedRoute,
 		private router: Router,
-		private http: HttpClient,
+		private http: HttpClient,private fb: FormBuilder,
 		@Inject('BASE_URL') private baseUrl: string) {
 		this.quiz = <Quiz>{};
 
+		this.createForm(); //zainicjonowanie formularza
 		var id = +this.activatedRoute.snapshot.params["id"];
 
 		if (id) {
@@ -33,19 +34,31 @@ export class QuizEditComponent {
 				this.title = "Edycja" + this.quiz.Title;
 			}, error => console.error(error));
 
+			this.updateForm();
 		}
 		else {
 			this.editMode = false;
 			this.title = "Utworz nowy quiz";
 		}
 
+
+
 	}
-		onSubmit(quiz: Quiz) {
+	onSubmit(quiz: Quiz) {
+
+		var tempQuiz = <Quiz>{};
+		tempQuiz.Title = this.form.value.Title;
+		tempQuiz.Description = this.form.value.Description;
+		tempQuiz.Text = this.form.value.Text;
+
 			var url = this.baseUrl + "api/quiz/";
 
-			if (this.editMode) {
+		if (this.editMode) {
+
+			//ustawienie tempQuiz.Id na quiz.Id.
+			tempQuiz.Id = this.quiz.Id;
 				this.http
-					.put<Quiz>(url, this.quiz)
+					.put<Quiz>(url, tempQuiz)
 					.subscribe(result => {
 						var v = result;
 						console.log("Quiz" + v.Id + "został uaktualniony.");
@@ -54,7 +67,7 @@ export class QuizEditComponent {
 			}
 			else {
 				this.http
-					.post<Quiz>(url, this.quiz)
+					.post<Quiz>(url, tempQuiz)
 					.subscribe(result => {
 						var v = result;
 						console.log("Quiz" + v.Id + "Został utworzony.");
@@ -65,7 +78,22 @@ export class QuizEditComponent {
 		onBack()
 		{
 			this.router.navigate(["home"]);
-		}
+	}
+
+	createForm() {
+		this.form = this.fb.group({
+			Title: ['', Validators.required],
+			Description: '',
+			Text: ''
+		});
+	}
+	updateForm() {
+		this.form.setValue({
+			Title: this.quiz.Title,
+			Description: this.quiz.Description || '',
+			Text: this.quiz.Text || ''
+		});
+	}
 	}
 
 
