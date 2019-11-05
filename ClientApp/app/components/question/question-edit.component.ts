@@ -45,28 +45,30 @@ export class QuestionEditComponent {
 		}
 	}
 
-	onSubmit(question: Question) {
-
-		var tempQuestion = <Question>{};
-		tempQuestion.QuizId = this.form.value.QuizId;
-		tempQuestion.Text = this.form.value.Text;
+	onSubmit() {
 		var url = this.baseUrl + "api/question";
 
+		var tempQuestion = <Question>{};
+
+		tempQuestion.Text = this.form.value.Text;
+		tempQuestion.QuizId = this.question.QuizId;
+
 		if (this.editMode) {
+			tempQuestion.Id = this.question.Id;
 			this.http
-				.put<Question>(url, tempQuestion)
+				.put<Result>(url, tempQuestion)
 				.subscribe(res => {
 					var v = res;
-					console.log("Pytanie " + v.Id + "zostało zaktualizowane.");
+					console.log("Pytanie " + v.Id + "został zaktualizowane.");
 					this.router.navigate(["quiz/edit", v.QuizId]);
 				}, error => console.log(error));
 		}
 		else {
 			this.http
-				.post<Question>(url, tempQuestion)
+				.post<Result>(url, tempQuestion)
 				.subscribe(res => {
 					var v = res;
-					console.log("Pytanie " + v.Id + "zostało utworzone.");
+					console.log("Pytanie" + v.Id + "zostało utworzone.");
 					this.router.navigate(["quiz/edit", v.QuizId]);
 				}, error => console.log(error));
 		}
