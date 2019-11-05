@@ -32,9 +32,10 @@ export class QuizEditComponent {
 			this.http.get<Quiz>(url).subscribe(result => {
 				this.quiz = result;
 				this.title = "Edycja" + this.quiz.Title;
+			this.updateForm();
+
 			}, error => console.error(error));
 
-			this.updateForm();
 		}
 		else {
 			this.editMode = false;
@@ -44,7 +45,7 @@ export class QuizEditComponent {
 
 
 	}
-	onSubmit(quiz: Quiz) {
+	onSubmit() {
 
 		var tempQuiz = <Quiz>{};
 		tempQuiz.Title = this.form.value.Title;
@@ -94,6 +95,26 @@ export class QuizEditComponent {
 			Text: this.quiz.Text || ''
 		});
 	}
+	//pobiera fromControl
+	getFormControl(name: string) {
+		return this.form.get(name);
+	}
+	//True jak jest poprawny
+	isValid(name: string) {
+		var e = this.getFormControl(name);
+		return e && e.valid;
+	}
+	//True jak uległ zmianie
+	isChanged(name: string) {
+		var e = this.getFormControl(name);
+		return e && (e.dirty || e.touched);
+	}
+	//True jak element fromControl nie jest poprawny
+	hasError(name: string) {
+		var e = this.getFormControl(name);
+		return e && (e.dirty || e.touched) && !e.valid;
+	}
+
 	}
 
 
