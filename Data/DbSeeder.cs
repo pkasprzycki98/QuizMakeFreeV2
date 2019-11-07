@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using QuizMakeFree.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace QuizMakeFree.Data
 {
@@ -14,10 +16,12 @@ namespace QuizMakeFree.Data
 
 	#region Metody publiczne
 
-		public static void Seed(ApplicationDbContext dbContext)
+		public static void Seed(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
 		{
-			if (!dbContext.Users.Any()) CreateUsers(dbContext);
-			
+			if (!dbContext.Users.Any())
+			{
+				CreateUsers(dbContext, roleManager, userManager).GetAwaiter().GetResult();
+			}
 			if (!dbContext.Quizzes.Any()) CreateQuizzes(dbContext);
 		}
 
@@ -26,27 +30,48 @@ namespace QuizMakeFree.Data
 
 		#region Metody generujace
 
-		private static void CreateUsers(ApplicationDbContext dbContext)
+		private static async Task CreateUsers(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
 		{
 			DateTime createdTime = new DateTime(2019,10,18);
 			DateTime latModifiedDate = DateTime.Now;
 
+			string role_Admin = "Admin";
+			string role_User = "User";
+
+			if (!await roleManager.RoleExistsAsync(role_Admin))
+			{
+				await roleManager.CreateAsync(new IdentityRole(role_Admin));
+			}
+			if (!await roleManager.RoleExistsAsync(role_User))
+			{
+				await roleManager.CreateAsync(new IdentityRole(role_User));
+			}
+
 
 			var user_admin = new ApplicationUser()
 			{
-				Id = Guid.NewGuid().ToString(),
+				SecurityStamp = Guid.NewGuid().ToString(),
 				UserName = "Admin",
 				Email = "admin@quizmakefree.com",
 				CreatedDate = createdTime,
 				LastModifiedDate = latModifiedDate
 			};
 
-			dbContext.Add(user_admin);
+			if (await userManager.FindByNameAsync(user_admin.UserName) == null)
+			{
+				await userManager.CreateAsync(user_admin, "Pass4Admin");
+				await userManager.AddToRoleAsync(user_admin, role_User);
+				await userManager.AddToRoleAsync(user_admin, role_Admin);
+
+				user_admin.EmailConfirmed = true;
+				user_admin.LockoutEnabled = false;
+			}
+		
 
 #if DEBUG
 			var user_Ryan = new ApplicationUser()
 			{
-				Id = Guid.NewGuid().ToString(),
+				SecurityStamp = Guid.NewGuid().ToString(),
 				UserName = "Ryan",
 				Email = "ryan@quizmakefree.com",
 				CreatedDate = createdTime,
@@ -56,7 +81,7 @@ namespace QuizMakeFree.Data
 
 			var user_Vodan = new ApplicationUser()
 			{
-				Id = Guid.NewGuid().ToString(),
+				SecurityStamp = Guid.NewGuid().ToString(),
 				UserName = "Vodan",
 				Email = "Vodan@quizmakefree.com",
 				CreatedDate = createdTime,
@@ -66,15 +91,42 @@ namespace QuizMakeFree.Data
 
 			var user_Solice = new ApplicationUser()
 			{
-				Id = Guid.NewGuid().ToString(),
+				SecurityStamp = Guid.NewGuid().ToString(),
 				UserName = "Solice",
 				Email = "Solice@quizmakefree.com",
 				CreatedDate = createdTime,
 				LastModifiedDate = latModifiedDate
 			};
-			dbContext.Users.AddRange(user_Ryan,user_Solice,user_Vodan);
+
+			if (await userManager.FindByNameAsync(user_Ryan.UserName) == null)
+			{
+				await userManager.CreateAsync(user_Ryan, "Pass4Ryan");
+				await userManager.AddToRoleAsync(user_Ryan, role_User);			
+
+				user_admin.EmailConfirmed = true;
+				user_admin.LockoutEnabled = false;
+			}
+
+			if (await userManager.FindByNameAsync(user_Vodan.UserName) == null)
+			{
+				await userManager.CreateAsync(user_Vodan, "Pass4Vodan");
+				await userManager.AddToRoleAsync(user_Vodan, role_User);
+
+				user_admin.EmailConfirmed = true;
+				user_admin.LockoutEnabled = false;
+			}
+
+			if (await userManager.FindByNameAsync(user_Solice.UserName) == null)
+			{
+				await userManager.CreateAsync(user_Solice, "Pass4Solice");
+				await userManager.AddToRoleAsync(user_Solice, role_User);
+
+				user_admin.EmailConfirmed = true;
+				user_admin.LockoutEnabled = false;
+			}
+
 #endif
-			dbContext.SaveChanges();
+			await dbContext.SaveChangesAsync();
 		}
 
 		private static void CreateQuizzes(ApplicationDbContext dbContext)

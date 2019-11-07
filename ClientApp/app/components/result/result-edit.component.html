@@ -1,37 +1,76 @@
 ﻿<h2>{{title}}</h2>
+
 <div class="result-edit">
-   <div class="form-group">
-      <label for="text">Treść wyniku:</label>
-      <br />
-      <textarea id="text" [(ngModel)]="result.Text" placeholder="Wpisz odpowiednią treść..."></textarea>
-   </div>
+	<form [formGroup]="form" (ngSubmit)="onSubmit()">
+		<div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('Text') }">
+			<label for="text">Treść wyniku:</label>
+			<br />
+			<textarea id="text"
+					  formControlName="Text"
+					  [(ngModel)]="result.Text"
+					  placeholder="Wpisz odpowiednią treść..."></textarea>
+			<span *ngIf="hasError('Text')"
+				  class="glyphicon glyphicon-remove form-control-feedback"
+				  aria-hidden="true"></span>
+			<div *ngIf="hasError('Text')"
+				 class="help-block">
+				To pole jest wymagane — wpisz poprawny tekst.
+			</div>
+		</div>
 
-   <div class="form-group">
-      <label for="MinValue">Minimalna wartość punktowa:</label>
-      <br />
-      <input type="number" id="MinValue" name="MinValue"
-             [(ngModel)]="result.MinValue" />
-   </div>
+		<div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('MinValue') }">
+			<label for="MinValue">Minimalna wartość punktowa:</label>
+			<br />
+			<input type="text"
+				   id="MinValue"
+				   formControlName="MinValue"
+				   name="MinValue"
+				   [(ngModel)]="result.MinValue" />
+			<span *ngIf="hasError('MinValue')"
+				  class="glyphicon glyphicon-remove form-control-feedback"
+				  aria-hidden="true"></span>
+			<div *ngIf="hasError('MinValue')"
+				 class="help-block">
 
-   <div class="form-group">
-      <label for="MaxValue">Maksymalna wartość punktowa:</label>
-      <br />
-      <input type="number" id="MaxValue" name="MaxValue"
-             [(ngModel)]="result.MaxValue" />
-   </div>
+				Wpisz wartość liczbową lub pozostaw pole pustym, aby dopasować się do wszystkiego mniejszego od MaxValue.
 
-   <div class="commands">
-      <input *ngIf="editMode" type="button"
-             value="Zastosuj zmiany"
-             (click)="onSubmit(result)"
-             class="btn btn-success" />
-      <input *ngIf="!editMode" type="button"
-             value="Utwórz wynik!"
-             (click)="onSubmit(result)"
-             class="btn btn-success" />
-      <input type="button" value="Anuluj"
-             (click)="onBack()"
-             class="btn btn-default" />
-   </div>
+			</div>
+		</div>
 
+		<div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('MaxValue') }">
+			<label for="MaxValue">Maksymalna wartość punktowa:</label>
+			<br />
+			<input type="number"
+				   id="MaxValue"
+				   formControlName="MaxValue"
+				   name="MaxValue"
+				   [(ngModel)]="result.MaxValue" />
+			<span *ngIf="hasError('MaxValue')"
+				  class="glyphicon glyphicon-remove form-control-feedback"
+				  aria-hidden="true"></span>
+			<div *ngIf="hasError('MaxValue')"
+				 class="help-block">
+				Wpisz wartość liczbową lub pozostaw pole pustym, aby dopasować się do wszystkiego mniejszego od MinValue.
+
+			</div>
+		</div>
+
+		<div class="form-group commands">
+			<button *ngIf="editMode" type="submit"
+					[disabled]="form.invalid"
+					class="btn btn-success">
+				Zapisz zmiany
+			</button>
+			<button *ngIf="!editMode" type="submit"
+					[disabled]="form.invalid"
+					class="btn btn-success">
+				Utwórz wynik!
+			</button>
+			<button type="submit"
+					(click)="onBack()"
+					class="btn btn-default">
+				Anuluj
+			</button>
+		</div>
+	</form>
 </div>

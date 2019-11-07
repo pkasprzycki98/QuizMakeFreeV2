@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QuizMakeFree.Data.Models
 {
-	public class ApplicationUser
+	public class ApplicationUser : IdentityUser
 	{
 		#region Konstruktor
 		public ApplicationUser()
@@ -18,14 +19,14 @@ namespace QuizMakeFree.Data.Models
 
 		#region Właściwości
 
-		[Key]
-		[Required]
-		public string Id { get; set; }
-		[Required]
-		[MaxLength]
-		public string UserName { get; set; }
-		[Required]
-		public string Email { get; set; }
+		//[Key]
+		//[Required]
+		//public string Id { get; set; }
+		//[Required]
+		//[MaxLength]
+		//public string UserName { get; set; }
+		//[Required]
+		//public string Email { get; set; }
 		public string DisplayName { get; set; }
 		public string Notes { get; set; }
 		[Required]

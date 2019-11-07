@@ -2,7 +2,7 @@
 
 namespace QuizMakeFree.Migrations
 {
-    public partial class check : Migration
+    public partial class InitialV2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

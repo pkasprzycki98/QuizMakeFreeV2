@@ -1,15 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QuizMakeFree.Data;
+using QuizMakeFree.Data.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System;
 
 namespace QuizMakeFree
 {
@@ -34,6 +36,41 @@ namespace QuizMakeFree
 		services.AddDbContext<ApplicationDbContext>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
          );
+
+			services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+				{
+					options.Password.RequireDigit = true;
+					options.Password.RequireLowercase = true;
+					options.Password.RequireUppercase = true;
+					options.Password.RequireNonAlphanumeric = false;
+					options.Password.RequiredLength = 7;
+				}).AddEntityFrameworkStores<ApplicationDbContext>();
+
+			services.AddAuthentication(options =>
+			{
+				options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(cfg => {
+
+				cfg.RequireHttpsMetadata = false;
+				cfg.SaveToken = true;
+				cfg.TokenValidationParameters = new TokenValidationParameters()
+				{
+					ValidIssuer = Configuration["Auth:Jwt:Issuer"],
+					ValidAudience = Configuration["Auth:Jwt:Audience"],
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:Jwt:Key"])),
+					ClockSkew = TimeSpan.Zero,
+
+					RequireExpirationTime = true,
+					ValidateIssuer = true,
+					ValidateIssuerSigningKey = true,
+					ValidateAudience = true,
+				};
+
+			});
+
+		
       }
 
       // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +103,8 @@ namespace QuizMakeFree
             }
          });
 
+			app.UseAuthentication();
+
          app.UseMvc(routes =>
          {
             routes.MapRoute(
@@ -77,12 +116,7 @@ namespace QuizMakeFree
                    defaults: new { controller = "Home", action = "Index" });
          });
 
-			using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-			{
-				var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-				dbContext.Database.Migrate();
-				DbSeeder.Seed(dbContext);
-			}
-      }
+		
+		}
    }
 }

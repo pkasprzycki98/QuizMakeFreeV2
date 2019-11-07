@@ -9,6 +9,8 @@ using Mapster;
 using QuizMakeFree.Data.Models;
 using Microsoft.Azure.KeyVault.Models;
 using QuizMakeFree.Controllers;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
@@ -19,7 +21,7 @@ namespace QuizMakeFreeWebApp.Controllers
 
 		#region Konstuktor
 
-		public QuizController(ApplicationDbContext dbContext) : base(dbContext)
+		public QuizController(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IConfiguration configuration) : base(dbContext,roleManager,userManager,configuration)
 		{
 
 		}

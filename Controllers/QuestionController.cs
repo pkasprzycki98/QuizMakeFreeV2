@@ -8,6 +8,8 @@ using QuizMakeFree.Data;
 using Mapster;
 using QuizMakeFree.Data.Models;
 using QuizMakeFree.Controllers;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
@@ -18,7 +20,7 @@ namespace QuizMakeFreeWebApp.Controllers
 
 		#region kontruktor
 
-		public QuestionController(ApplicationDbContext dbContext) : base(dbContext)
+		public QuestionController(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IConfiguration configuration) : base(dbContext,roleManager,userManager,configuration)
 		{		
 		}
 		#endregion
