@@ -50,5 +50,9 @@
 	{
 		"outputFile": "ClientApp/app/components/answer/answer-edit.component.css",
 		"inputFile": "ClientApp/app/components/answer/answer-edit.component.less"
+	},
+	{
+		"outputFile": "ClientApp/app/components/login/login.component.css",
+		"inputFile": "ClientApp/app/components/login/login.component.less"
 	}
 ]

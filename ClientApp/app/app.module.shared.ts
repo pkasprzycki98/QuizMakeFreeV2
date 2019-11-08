@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
+import { AuthService } from './services/auth.service';
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
@@ -63,7 +63,10 @@ import { QuizSearchComponent } from './components/quiz/quiz-search.component';
 		  { path: 'login', component: LoginComponent },
 		  {path: '**', component: PageNotFoundComponent}
       ])
-   ]
+	],
+	providers: [
+		AuthService
+	]
 })
 export class AppModuleShared {
 }
