@@ -8,9 +8,13 @@ import 'rxjs/Rx';
 export class AuthService {
 	authKey: string = "auth";
 	clientId: string = "TestMakerFree";
+	userName: string;
 
 	constructor(private http: HttpClient,
 		@Inject(PLATFORM_ID) private platformId: any) {
+		this.userName = String(localStorage.getItem("username"));
+
+		console.log(localStorage.getItem("username"));
 	}
 
 	// Przeprowadza logowanie
@@ -25,7 +29,9 @@ export class AuthService {
 			// Oddzielona spacjami lista zakresów, dla których token będzie ważny
 			scope: "offline_access profile email"
 		};
+		this.userName = data.username;
 
+		localStorage.setItem("username", this.userName);
 		return this.http.post<TokenResponse>(url, data)
 			.map((res) => {
 				let token = res && res.token;
@@ -81,6 +87,8 @@ export class AuthService {
 	isLoggedIn(): boolean {
 		if (isPlatformBrowser(this.platformId)) {
 			return localStorage.getItem(this.authKey) != null;
+
+			
 		}
 		return false;
 	}

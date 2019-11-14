@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from '../app/services/auth.interceptor';
 import { RouterModule } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { AppComponent } from './components/app/app.component';
@@ -65,7 +66,11 @@ import { QuizSearchComponent } from './components/quiz/quiz-search.component';
       ])
 	],
 	providers: [
-		AuthService
+		AuthService,	{
+			provide: HTTP_INTERCEPTORS,
+			useClass: AuthInterceptor,
+			multi: true
+}	
 	]
 })
 export class AppModuleShared {

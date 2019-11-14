@@ -22,6 +22,8 @@ namespace QuizMakeFree.ViewModels
 		public string Token { get; set; }
 		public int Expiration { get; set; }
 
+		public string Refresh_token { get; set; }
+
 		#endregion
 	}
 }

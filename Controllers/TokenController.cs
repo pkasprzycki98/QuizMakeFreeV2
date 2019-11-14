@@ -35,6 +35,8 @@ namespace QuizMakeFree.Controllers
 			{
 				case "password":
 					return await GetToken(model);
+				case "refresh_token":
+					return await RefreshToken(model);
 				default:
 					return new UnauthorizedResult();
 			}
@@ -59,45 +61,104 @@ namespace QuizMakeFree.Controllers
 
 				// Nazwa użytkownika i hasło jest prawidłowe - utwórz token JWT
 
-				DateTime now = DateTime.UtcNow;
+				var rt = CreateRefreshToken(model.Client_id, user.Id);
+				DbContext.Tokens.Add(rt);
+				DbContext.SaveChanges();
 
-				// Dodaj odpowiednie roszczenia do JWT (RFC7519).
-				var claims = new[] {
-					new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-					new Claim(JwtRegisteredClaimNames.Iat,
-						new DateTimeOffset(now).ToUnixTimeSeconds().ToString())
-                  
-                };
+				var t = CreateAccessToken(user.Id, rt.Value);
 
-				var tokenExpirationMins =
-					Configuration.GetValue<int>("Auth:Jwt:TokenExpirationInMinutes");
-				var issuerSigningKey = new SymmetricSecurityKey(
-					Encoding.UTF8.GetBytes(Configuration["Auth:Jwt:Key"]));
-
-				var token = new JwtSecurityToken(
-					issuer: Configuration["Auth:Jwt:Issuer"],
-					audience: Configuration["Auth:Jwt:Audience"],
-					claims: claims,
-					notBefore: now,
-					expires: now.Add(TimeSpan.FromMinutes(tokenExpirationMins)),
-					signingCredentials: new SigningCredentials(
-						issuerSigningKey, SecurityAlgorithms.HmacSha256)
-				);
-				var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-				// Zbuduj i zwróć odpowiedź
-				var response = new TokenResponseViewModel()
-				{
-					Token = encodedToken,
-					Expiration = tokenExpirationMins
-				};
-				return Json(response);
+				return Json(rt);
 			}
 			catch
 			{
 				return new UnauthorizedResult();
 			}
+		}
+
+		private async Task<IActionResult> RefreshToken(TokenRequestViewModel model)
+		{
+			try
+			{
+				//sprawdzenie czy token istnieje dla obcenego clienta
+				var rt = DbContext.Tokens.FirstOrDefault(t => t.ClientId == model.Client_id && t.Value == model.Refresh_token);
+
+				//Token nie istnieje lub zły client
+				if (rt == null)
+				{
+					return new UnauthorizedResult();
+				}
+
+				var user = await UserManager.FindByIdAsync(rt.UserId);
+
+				if (user == null)
+				{
+					// uzytkownika nie znaleziona lub nieporawny
+					return new UnauthorizedResult();
+				}
+				var rtNew = CreateRefreshToken(rt.ClientId, rt.UserId);
+
+				DbContext.Tokens.Remove(rt);
+				DbContext.Tokens.Add(rtNew);
+				DbContext.SaveChanges();
+
+				var respone = CreateAccessToken(rtNew.ClientId, rtNew.Value);
+
+				return Json(respone);
+			}
+			catch (Exception ex)
+			{
+				return new UnauthorizedResult();
+			}
+		}
+
+		private Token CreateRefreshToken(string clientId, string userId)
+		{
+			return new Token()
+			{
+				ClientId = clientId,
+				UserId = userId,
+				Type = 0,
+				Value = Guid.NewGuid().ToString("N"),
+				CreatedDate = DateTime.UtcNow
+
+			};
+
+		}
+
+		private TokenResponseViewModel CreateAccessToken(string userId, string refreshToken) {
+
+			DateTime now = DateTime.UtcNow;
+
+			var claims = new[] {
+
+				new Claim(JwtRegisteredClaimNames.Sub, userId),
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+				new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUnixTimeSeconds().ToString())
+			};
+
+			var tokenExpirationMins = Configuration.GetValue<int>("Auth:Jwt:TokenExpirationInMinutes");
+
+			var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:Jwt:Key"]));
+
+
+			var token = new JwtSecurityToken(
+				issuer: Configuration["Auth:Jwt:Issuer"],
+				audience: Configuration["Auth:Jwt:Audience"],
+				claims: claims,
+				notBefore: now,
+				expires: now.Add(TimeSpan.FromMinutes(tokenExpirationMins)),
+				signingCredentials: new SigningCredentials(issuerSigningKey, SecurityAlgorithms.HmacSha256)
+				);
+
+			var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+			return new TokenResponseViewModel()
+			{
+				Token = encodedToken,
+				Expiration = tokenExpirationMins,
+				Refresh_token = refreshToken
+
+			};
 		}
 
 	}

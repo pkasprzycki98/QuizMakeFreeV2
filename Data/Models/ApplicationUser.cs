@@ -40,6 +40,8 @@ namespace QuizMakeFree.Data.Models
 		#region Właściwości wczytwane lazyLoading
 		[ForeignKey("QuizId")]
 		public virtual List<Quiz> Quizzes { get; set; }
+
+		public virtual List<Token> Tokens { get; set; }
 		#endregion
 
 	}

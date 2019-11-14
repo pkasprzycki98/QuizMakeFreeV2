@@ -11,31 +11,45 @@
       </div>
       <div class='clearfix'></div>
       <div class='navbar-collapse collapse'>
-         <ul class='nav navbar-nav'>
-            <li [routerLinkActive]="['link-active']">
-               <a [routerLink]="['/home']">
-                  <span class='glyphicon glyphicon-home'>
-                  </span> Strona główna
-               </a>
-            </li>
-            <li [routerLinkActive]="['link-active']">
-               <a [routerLink]="['/about']">
-                  <span class='glyphicon glyphicon-info-sign'>
-                  </span> O witrynie
-               </a>
-            </li>
-            <li [routerLinkActive]="['link-active']">
-               <a [routerLink]="['/login']">
-                  <span class='glyphicon glyphicon-log-in'>
-                  </span> Logowanie
-               </a>
-            </li>
-            <li [routerLinkActive]="['link-active']">
-               <a [routerLink]="['/quiz/create']">
-                  <span class='glyphicon glyphicon-plus'></span> Utwórz quiz
-               </a>
-            </li>
-         </ul>
+		  <ul class='nav navbar-nav'>
+		  	<li *ngIf="this.auth.isLoggedIn()" >
+		  		<a class="user-icon">
+		  			<span class='glyphicon glyphicon-user'></span> 
+					  {{auth.userName}}
+		  		</a>
+		  	</li>
+		  	<li [routerLinkActive]="['link-active']">
+		  		<a [routerLink]="['/home']">
+		  			<span class='glyphicon glyphicon-home'>
+		  			</span> Strona główna
+		  		</a>
+		  	</li>
+		  	<li [routerLinkActive]="['link-active']">
+		  		<a [routerLink]="['/about']">
+		  			<span class='glyphicon glyphicon-info-sign'>
+		  			</span> O witrynie
+		  		</a>
+		  	</li>
+		  	<li *ngIf="this.auth.isLoggedIn()" [routerLinkActive]="['link-active']">
+		  		<a [routerLink]="['/quiz/create']">
+		  			<span class='glyphicon glyphicon-plus'></span> Utwórz quiz
+		  		</a>
+		  	</li>
+
+		  	<li *ngIf="!this.auth.isLoggedIn()" [routerLinkActive]="['link-active']">
+		  		<a [routerLink]="['/login']">
+		  			<span class='glyphicon glyphicon-log-in'>
+		  			</span> Logowanie
+		  		</a>
+		  	</li>
+
+		  	<li *ngIf="this.auth.isLoggedIn()">
+		  		<a (click)="logout()">
+		  			<span class="glyphicon glyphicon-log-out"></span>
+		  			Wylogowanie
+		  		</a>
+		  	</li>
+		  </ul>
       </div>
    </div>
 </div>

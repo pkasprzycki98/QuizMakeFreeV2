@@ -22,6 +22,8 @@ namespace QuizMakeFree.ViewModels
 		public string Client_secret { get; set; }
 		public string Username { get; set; }
 		public string Password { get; set; }
+		public string Refresh_token { get; set; }
+
 
 		#endregion
 	}

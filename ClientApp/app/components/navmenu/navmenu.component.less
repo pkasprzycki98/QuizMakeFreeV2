@@ -1,68 +1,76 @@
 .main-nav {
-   position: fixed;
-   top: 85px;
-   left: 0;
-   right: 0;
-   z-index: 1;
+	position: fixed;
+	top: 110px;
+	left: 0;
+	right: 0;
+	z-index: 1;
 
-   li {
-      a {
-         cursor: pointer;
-      }
+	li {
+		a {
+			cursor: pointer;
+		}
 
-      .glyphicon {
-         margin-right: 10px;
-      }
+		.glyphicon {
+			margin-right: 10px;
+		}
 
-      &.link-activea,
-      &.link-active a:hover,
-      &.link-active a:focus {
-         background-color: #4189C7;
-         color: white;
-      }
-   }
-}
+		&.link-activea,
+		&.link-active a:hover,
+		&.link-active a:focus {
+			background-color: #4189C7;
+			color: white;
+		}
 
-@media (min-width: 768px) {
-   .main-nav {
-      top: 100px;
-      width: calc(~"25% - 30px");
-      min-width: 180px;
+		a {
+			margin-right:20px;
+			.usericon {
+				background-color: #4189C7;
+				color: white;
+			}
+		}
+	}
 
-      .navbar {
-         border-radius: 0 15px 15px 0;
-         border-width: 0px;
-         height: 100%;
+	@media (min-width: 768px) {
+		.main-nav {
+			top: 110px;
+			width: calc(~"25% - 30px");
+			min-width: 180px;
+			margin-top: 25px;
 
-         a {
-            width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-         }
+			.navbar {
+				border-radius: 0 15px 15px 0;
+				border-width: 0px;
+				height: 100%;
 
-         ul {
-            float: none;
-         }
+				a {
+					width: 100%;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
 
-         li {
-            float: none;
-            font-size: 15px;
-            margin: 6px;
+				ul {
+					float: none;
+				}
 
-            a {
-               padding: 10px 16px;
-               border-radius: 4px;
-            }
-         }
-      }
+				li {
+					float: none;
+					font-size: 15px;
+					margin: 6px;
 
-      .navbar-header {
-         float: none;
-      }
+					a {
+						padding: 10px 16px;
+						border-radius: 4px;
+					}
+				}
+			}
 
-      .navbar-collapse {
-         padding: 0px;
-      }
-   }
-}
+			.navbar-header {
+				float: none;
+			}
+
+			.navbar-collapse {
+				padding: 0px;
+			}
+		}
+	}

@@ -11,6 +11,8 @@ using Microsoft.Azure.KeyVault.Models;
 using QuizMakeFree.Controllers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
@@ -48,14 +50,15 @@ namespace QuizMakeFreeWebApp.Controllers
       }
 
       
-      [HttpPost]
-      public IActionResult Post([FromBody]QuizViewModel model)
+        [HttpPost]
+		[Authorize]
+		public IActionResult Post([FromBody]QuizViewModel model)
       {
 			if (model == null)
 			{
 				return new StatusCodeResult(500);
 			}
-			var quiz = new Quiz();
+			var quiz = new Quiz();		
 
 			quiz.Title = model.Title;
 			quiz.Description = model.Description;
@@ -66,7 +69,7 @@ namespace QuizMakeFreeWebApp.Controllers
 			quiz.CreatedDate = DateTime.Now;
 			quiz.LastModifiedDate = quiz.CreatedDate;
 
-			quiz.UserId = DbContext.Users.Where(u => u.UserName == "Admin").FirstOrDefault().Id;
+			quiz.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 			DbContext.Quizzes.Add(quiz);
 
@@ -77,8 +80,9 @@ namespace QuizMakeFreeWebApp.Controllers
 
       }
 
-      [HttpPut]
-      public IActionResult Put([FromBody]QuizViewModel model)
+        [HttpPut]
+		[Authorize]
+		public IActionResult Put([FromBody]QuizViewModel model)
       {
 
 			if (model == null)
@@ -106,8 +110,9 @@ namespace QuizMakeFreeWebApp.Controllers
 
       }
 
-      [HttpDelete("{id}")]
-      public IActionResult Delete(int id)
+        [HttpDelete("{id}")]
+		[Authorize]
+		public IActionResult Delete(int id)
       {
 			var quiz = DbContext.Quizzes.Where(q => q.Id == id).FirstOrDefault();
 

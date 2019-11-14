@@ -1,6 +1,6 @@
-﻿.main-nav {
+.main-nav {
   position: fixed;
-  top: 85px;
+  top: 110px;
   left: 0;
   right: 0;
   z-index: 1;
@@ -17,11 +17,17 @@
   background-color: #4189C7;
   color: white;
 }
+.main-nav li .user-icon {
+  background-color: #4189C7;
+  color: white;
+  margin-right: 30px;
+}
 @media (min-width: 768px) {
   .main-nav {
-    top: 100px;
+    top: 110px;
     width: calc(25% - 30px);
     min-width: 180px;
+    margin-top: 25px;
   }
   .main-nav .navbar {
     border-radius: 0 15px 15px 0;

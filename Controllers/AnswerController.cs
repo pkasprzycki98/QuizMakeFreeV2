@@ -10,6 +10,7 @@ using QuizMakeFree.Data.Models;
 using QuizMakeFree.Controllers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QuizMakeFreeWebApp.Controllers
 {
@@ -48,6 +49,7 @@ namespace QuizMakeFreeWebApp.Controllers
       }
 
 		[HttpPost]
+		[Authorize]
 		public IActionResult Post([FromBody]AnswerViewModel model)
 		{
 			if (model == null)
@@ -70,7 +72,8 @@ namespace QuizMakeFreeWebApp.Controllers
 
 
 		[HttpPut]
-      public IActionResult Put([FromBody]AnswerViewModel model)
+		[Authorize]
+		public IActionResult Put([FromBody]AnswerViewModel model)
       {
 			if (model == null)
 				return new StatusCodeResult(500);
@@ -105,7 +108,8 @@ namespace QuizMakeFreeWebApp.Controllers
       
       
       [HttpDelete("{id}")]
-      public IActionResult Delete(int id)
+		[Authorize]
+		public IActionResult Delete(int id)
       {
 			var answer = DbContext.Answers.Where(a => a.Id == id).FirstOrDefault();
 

@@ -24,57 +24,62 @@ namespace QuizMakeFree
 
       public IConfiguration Configuration { get; }
 
-      // This method gets called by the runtime. Use this method to add services to the container.
-      public void ConfigureServices(IServiceCollection services)
-      {
-         services.AddMvc();
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddMvc();
 
-         // Dodanie obs³ugi EntityFramework zwi¹zanej z SqlServer.
-         services.AddEntityFrameworkSqlServer();
-		services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-		// Dodanie ApplicationDbContext.
-		services.AddDbContext<ApplicationDbContext>(options =>
-           options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-         );
+			// Dodanie obs³ugi EntityFramework zwi¹zanej z SqlServer
+			services.AddEntityFrameworkSqlServer();
 
-			services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-				{
-					options.Password.RequireDigit = true;
-					options.Password.RequireLowercase = true;
-					options.Password.RequireUppercase = true;
-					options.Password.RequireNonAlphanumeric = false;
-					options.Password.RequiredLength = 7;
-				}).AddEntityFrameworkStores<ApplicationDbContext>();
+			// Dodanie ApplicationDbContext
+			services.AddDbContext<ApplicationDbContext>(options =>
+			   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+			);
 
-			services.AddAuthentication(options =>
+			// Dodanie obs³ugi ASP.NET Identity
+			services.AddIdentity<ApplicationUser, IdentityRole>(
+			opts =>
 			{
-				options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			}).AddJwtBearer(cfg => {
+				opts.Password.RequireDigit = true;
+				opts.Password.RequireLowercase = true;
+				opts.Password.RequireUppercase = true;
+				opts.Password.RequireNonAlphanumeric = false;
+				opts.Password.RequiredLength = 7;
+			})
+			.AddEntityFrameworkStores<ApplicationDbContext>();
 
+			// Dodaj uwierzytelnianie za pomoc¹ tokenów JWT
+			services.AddAuthentication(opts =>
+			{
+				opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+				opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			})
+			.AddJwtBearer(cfg =>
+			{
 				cfg.RequireHttpsMetadata = false;
 				cfg.SaveToken = true;
 				cfg.TokenValidationParameters = new TokenValidationParameters()
 				{
-					ValidIssuer = Configuration["Auth:Jwt:Issuer"],
+				 // Konfiguracja standardowa
+				 ValidIssuer = Configuration["Auth:Jwt:Issuer"],
+					IssuerSigningKey = new SymmetricSecurityKey(
+						Encoding.UTF8.GetBytes(Configuration["Auth:Jwt:Key"])),
 					ValidAudience = Configuration["Auth:Jwt:Audience"],
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:Jwt:Key"])),
 					ClockSkew = TimeSpan.Zero,
 
-					RequireExpirationTime = true,
+				 // Prze³¹czniki zwi¹zane z bezpieczeñstwem
+				 RequireExpirationTime = true,
 					ValidateIssuer = true,
 					ValidateIssuerSigningKey = true,
-					ValidateAudience = true,
+					ValidateAudience = true
 				};
-
 			});
+		}
 
-		
-      }
-
-      // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-      public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
       {
          if (env.IsDevelopment())
          {
@@ -105,7 +110,7 @@ namespace QuizMakeFree
 
 			app.UseAuthentication();
 
-         app.UseMvc(routes =>
+			app.UseMvc(routes =>
          {
             routes.MapRoute(
                    name: "default",
