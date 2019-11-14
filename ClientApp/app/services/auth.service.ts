@@ -3,11 +3,12 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import 'rxjs/Rx';
+import { retry } from "rxjs/operator/retry";
 
 @Injectable()
 export class AuthService {
 	authKey: string = "auth";
-	clientId: string = "TestMakerFree";
+	clientId: string = "QuizMakeFree";
 	userName: string;
 
 	constructor(private http: HttpClient,
@@ -32,6 +33,22 @@ export class AuthService {
 		this.userName = data.username;
 
 		localStorage.setItem("username", this.userName);
+		return this.getAuthFromServer(url, data);
+	}
+
+	refreshToken(): Observable<boolean> {
+		var url = "api/token/auth";
+		var data = {
+			client_id: this.clientId,
+			grant_type: "refresh_token",
+			refresh_token: this.getAuth()!.refresh_token,
+			scope: "offline_access profile email"
+		};
+
+		return this.getAuthFromServer(url, data);
+	}
+
+	getAuthFromServer(url: string, data: any): Observable<boolean> {
 		return this.http.post<TokenResponse>(url, data)
 			.map((res) => {
 				let token = res && res.token;

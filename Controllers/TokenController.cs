@@ -60,14 +60,15 @@ namespace QuizMakeFree.Controllers
 				}
 
 				// Nazwa użytkownika i hasło jest prawidłowe - utwórz token JWT
-
 				var rt = CreateRefreshToken(model.Client_id, user.Id);
+
+				// Dodaj nowy tokoen odświeżania do bazy danych
 				DbContext.Tokens.Add(rt);
 				DbContext.SaveChanges();
 
+				// Utwórz i zwróć token dostępowy
 				var t = CreateAccessToken(user.Id, rt.Value);
-
-				return Json(rt);
+				return Json(t);
 			}
 			catch
 			{

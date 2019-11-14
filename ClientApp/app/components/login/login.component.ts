@@ -38,7 +38,9 @@ export class LoginComponent {
 		var password = this.form.value.Password;
 
 		this.authService.login(username, password)
-			.subscribe(res => {				
+			.subscribe(res => {
+				// Logowanie udane
+
 				this.router.navigate(["home"]);
 			},
 				err => {
@@ -49,7 +51,6 @@ export class LoginComponent {
 					});
 				});
 	}
-	
 
 	onBack() {
 		this.router.navigate(["home"]);
@@ -77,5 +78,4 @@ export class LoginComponent {
 		var e = this.getFormControl(name);
 		return e && (e.dirty || e.touched) && !e.valid;
 	}
-
 }
