@@ -3,4 +3,5 @@
 	Id: number;
 	QuizId: number;
 	Text: string
+	Answer: Answer[];
 }

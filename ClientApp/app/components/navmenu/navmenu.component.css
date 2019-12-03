@@ -1,4 +1,4 @@
-.main-nav {
+﻿.main-nav {
   position: fixed;
   top: 110px;
   left: 0;
@@ -17,17 +17,11 @@
   background-color: #4189C7;
   color: white;
 }
-.main-nav li .user-icon {
-  background-color: #4189C7;
-  color: white;
-  margin-right: 30px;
-}
 @media (min-width: 768px) {
   .main-nav {
-    top: 110px;
+    top: 100px;
     width: calc(25% - 30px);
     min-width: 180px;
-    margin-top: 25px;
   }
   .main-nav .navbar {
     border-radius: 0 15px 15px 0;

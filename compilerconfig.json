@@ -54,5 +54,21 @@
 	{
 		"outputFile": "ClientApp/app/components/login/login.component.css",
 		"inputFile": "ClientApp/app/components/login/login.component.less"
+	},
+	{
+		"outputFile": "ClientApp/app/components/quiz-take/quiz-take.component.css",
+		"inputFile": "ClientApp/app/components/quiz-take/quiz-take.component.less"
+	},
+	{
+		"outputFile": "ClientApp/app/components/quiz-take/answer-take.component.css",
+		"inputFile": "ClientApp/app/components/quiz-take/answer-take.component.less"
+	},
+	{
+		"outputFile": "ClientApp/app/components/quiz-take/question-take.component.css",
+		"inputFile": "ClientApp/app/components/quiz-take/question-take.component.less"
+	},
+	{
+		"outputFile": "ClientApp/app/components/quiz-take/result-take.component.css",
+		"inputFile": "ClientApp/app/components/quiz-take/result-take.component.less"
 	}
 ]

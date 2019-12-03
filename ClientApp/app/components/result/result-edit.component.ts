@@ -65,7 +65,7 @@ export class ResultEditComponent {
 		var url = this.baseUrl + "api/result";
 
 		var tempResult = <Result>{};
-		tempResult.QuizId = this.form.value.QuizId;
+		tempResult.QuizId = this.result.QuizId;
 		tempResult.MinValue = this.form.value.MinValue;
 		tempResult.Text = this.form.value.Text;
 		tempResult.MaxValue = this.form.value.MaxValue;

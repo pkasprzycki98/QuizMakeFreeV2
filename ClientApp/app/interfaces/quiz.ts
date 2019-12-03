@@ -2,5 +2,6 @@ interface Quiz {
    Id: number;
    Title: string;
    Description: string;
-   Text: string;
+	Text: string;
+	Questions: Question[];
 }

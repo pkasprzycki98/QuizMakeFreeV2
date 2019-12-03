@@ -19,7 +19,8 @@ namespace QuizMakeFree.Controllers
 
 		}
 		#region  metordyRest
-
+		
+		[HttpPost]
 		public async Task<IActionResult> Post([FromBody]UserViewModel model)
 		{
 			// Dane od klienta niewłaściwe,zwraca Http 500 ( serwer error)
@@ -40,17 +41,18 @@ namespace QuizMakeFree.Controllers
 				CreatedDate = now,
 				LastModifiedDate = now
 			};
-			// Dodanie użytkownika z wybranym hasłem
-			await UserManager.CreateAsync(user, model.Password);
-			// Dodanie roli do użytkownika
-			await UserManager.AddToRoleAsync(user, "User");
 
 			user.EmailConfirmed = true;
 			user.LockoutEnabled = false;
 
+			string user_role = "User";
+
+			await UserManager.CreateAsync(user, model.Password);
+
+			 if(await RoleManager.RoleExistsAsync(user_role))
+			await UserManager.AddToRoleAsync(user, user_role);
+
 			DbContext.SaveChanges();
-
-
 
 			return Json(user.Adapt<UserViewModel>(), JsonSettings);
 		}

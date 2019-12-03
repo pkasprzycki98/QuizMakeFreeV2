@@ -22,38 +22,48 @@ import { AnswerEditComponent } from './components/answer/answer-edit.component';
 import { ResultListComponent } from './components/result/result-list.component';
 import { ResultEditComponent } from './components/result/result-edit.component';
 import { QuizSearchComponent } from './components/quiz/quiz-search.component';
-
+import { RegisterComponent } from './components/user/register.component';
+import { QuizTakeComponent } from './components/quiz-take/quiz-take.component';
+import { QuestionTakeComponent } from './components/quiz-take/question-take.component';
+import { ResultTakeComponent } from './components/quiz-take/result-take.component';
+import { AnswerTakeComponent } from './components/quiz-take/answer-take.component';
 
 @NgModule({
-   declarations: [
-      AppComponent,
-      NavMenuComponent,
-      HomeComponent,
-	  QuizListComponent,
-	  QuizEditComponent,
-	  QuizComponent,
-	  QuizSearchComponent,
-	  QuestionListComponent,
-	  QuestionEditComponent,
-	  AnswerListComponent,
-	  AnswerEditComponent,
-	  ResultListComponent,
-	  ResultEditComponent,
-	  AboutComponent,
-	  LoginComponent,
-	  PageNotFoundComponent
-   ],
-   imports: [
-      CommonModule,
-      HttpClientModule,
-	   FormsModule,
-	   ReactiveFormsModule,
-      RouterModule.forRoot([
-         { path: '', redirectTo: 'home', pathMatch: 'full' },
-		  { path: 'home', component: HomeComponent },
-		  { path: 'quiz/create', component: QuizEditComponent },
-		  {path: 'quiz/edit/:id',component: QuizEditComponent},
-		  { path: 'quiz/:id', component: QuizComponent },
+	declarations: [
+		AppComponent,
+		NavMenuComponent,
+		HomeComponent,
+		QuizListComponent,
+		QuizEditComponent,
+		QuizComponent,
+		QuizSearchComponent,
+		QuestionListComponent,
+		QuestionEditComponent,
+		QuizTakeComponent,
+		QuestionTakeComponent,
+		AnswerTakeComponent,
+		ResultTakeComponent,
+		AnswerListComponent,
+		AnswerEditComponent,
+		ResultListComponent,
+		ResultEditComponent,
+		AboutComponent,
+		LoginComponent,
+		RegisterComponent,
+		PageNotFoundComponent
+	],
+	imports: [
+		CommonModule,
+		HttpClientModule,
+		FormsModule,
+		ReactiveFormsModule,
+		RouterModule.forRoot([
+			{ path: '', redirectTo: 'home', pathMatch: 'full' },
+			{ path: 'home', component: HomeComponent },
+			{ path: 'quiz/create', component: QuizEditComponent },
+			{ path: 'quiz/edit/:id', component: QuizEditComponent },
+			{ path: 'quiz/:id', component: QuizComponent },
+			{ path: 'quiz/take/:id', component: QuizTakeComponent },
 		  {path: 'question/create/:id', component: QuestionEditComponent},
 		  { path: 'question/edit/:id', component: QuestionEditComponent },
 		  { path: 'answer/create/:id', component: AnswerEditComponent },
@@ -63,6 +73,7 @@ import { QuizSearchComponent } from './components/quiz/quiz-search.component';
 		  { path: 'home', component: HomeComponent},
 		  { path: 'about', component: AboutComponent },
 		  { path: 'login', component: LoginComponent },
+		  { path: 'register', component: RegisterComponent},
 		  {path: '**', component: PageNotFoundComponent}
       ])
 	],

@@ -1,0 +1,9 @@
+﻿<table class="table table-hover answers" style="margin-left:30px">
+	<tbody>
+		<tr  class="AnswerText" *ngFor="let answer of answers">
+			<td>{{answer.Text}}</td>
+			<td><input class="checkbox" id="Answer:{{answer.Id}}" type="checkbox" (click)="isChange(answer.Id)" data-isChecked="false" attr.data-answerValue="{{answer.Value}}"></td>		
+		</tr>
+	</tbody>
+</table>
+

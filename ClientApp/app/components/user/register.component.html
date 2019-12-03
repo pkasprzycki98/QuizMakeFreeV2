@@ -1,0 +1,90 @@
+<div class="login-container">
+   <img id="login-img" class="login-img"
+        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+   <h2 class="login-title">{{title}}</h2>
+   <form [formGroup]="form"
+         (ngSubmit)="onSubmit()">
+      <div class="form-group"
+           [ngClass]="{ 'has-error has-feedback' : hasError('Username') }">
+         <input type="text" required autofocus
+                formControlName="Username"
+                class="form-control"
+                placeholder="Wpisz nazwę użytkownika..." />
+         <span *ngIf="hasError('Username')"
+               class="glyphicon glyphicon-remove form-control-feedback"
+               aria-hidden="true"></span>
+         <div *ngIf="hasError('Username')"
+              class="help-block">
+            Proszę wpisać poprawną nazwę użytkownika.
+         </div>
+      </div>
+      <div class="form-group"
+           [ngClass]="{ 'has-error has-feedback' : hasError('Email') }">
+         <input type="text" required autofocus
+                formControlName="Email"
+                class="form-control"
+                placeholder="Wpisz e-mail..." />
+         <span *ngIf="hasError('Email')"
+               class="glyphicon glyphicon-remove form-control-feedback"
+               aria-hidden="true"></span>
+         <div *ngIf="hasError('Email')"
+              class="help-block">
+            Proszę wpisać poprawny adres e-mail.
+         </div>
+      </div>
+      <div class="form-group"
+         [ngClass]="{ 'has-error has-feedback' : hasError('Password') }">
+        <input type="password" required
+               formControlName="Password"
+               class="form-control"
+               placeholder="Wpisz hasło..." />
+        <span *ngIf="hasError('Password')"
+              class="glyphicon glyphicon-remove form-control-feedback"
+              aria-hidden="true"></span>
+            <div *ngIf="hasError('Password')"
+                 class="help-block">
+                Proszę wpisać poprawne hasło.
+            </div>
+        </div>
+        <div class="form-group"
+             [ngClass]="{ 'has-error has-feedback' : hasError('PasswordConfirm') }">
+            <input type="password" required
+                   formControlName="PasswordConfirm"
+                   class="form-control"
+                   placeholder="Powtórz hasło..." />
+            <span *ngIf="hasError('PasswordConfirm')"
+                  class="glyphicon glyphicon-remove form-control-feedback"
+                  aria-hidden="true"></span>
+            <div *ngIf="hasError('PasswordConfirm')"
+                 class="help-block">
+                Hasło i jego potwierdzenie nie są zgodne.
+            </div>
+        </div>
+        <div class="form-group"
+             [ngClass]="{ 'has-error has-feedback' : hasError('DisplayName') }">
+            <input type="text" required autofocus
+                   formControlName="DisplayName"
+                   class="form-control"
+                   placeholder="Określ wyświetlaną nazwę użytkownika..." />
+            <span *ngIf="hasError('DisplayName')"
+                  class="glyphicon glyphicon-remove form-control-feedback"
+                  aria-hidden="true"></span>
+            <div *ngIf="hasError('DisplayName')"
+                 class="help-block">
+                Wpisz poprawną nazwę użytkownika do wyświetlania.
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="submit"
+                    [disabled]="form.invalid"
+                    class="btn btn-md btn-success btn-signin">
+                Zarejestruj się
+            </button>
+            <button type="submit"
+                    (click)="onBack()"
+                    class="btn btn-md btn-default">
+                Anuluj
+            </button>
+        </div>
+</form>
+</div>
