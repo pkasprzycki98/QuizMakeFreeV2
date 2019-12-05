@@ -2,7 +2,7 @@
 	<tbody>
 		<tr  class="AnswerText" *ngFor="let answer of answers">
 			<td>{{answer.Text}}</td>
-			<td><input class="checkbox" id="Answer:{{answer.Id}}" type="checkbox" (click)="isChange(answer.Id)" data-isChecked="false" attr.data-answerValue="{{answer.Value}}"></td>		
+			<td><input name="checkbox" class="{{question.Id}}" id="Answer:{{answer.Id}}" type="checkbox" attr.data-questionId="{{question.Id}}" (click)="isChange(answer.Id)" data-isChecked="false" attr.data-answerValue="{{answer.Value}}"></td>		
 		</tr>
 	</tbody>
 </table>

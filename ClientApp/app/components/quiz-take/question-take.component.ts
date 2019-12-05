@@ -43,7 +43,7 @@ export class QuestionTakeComponent implements OnChanges {
 
 	sumPoint() {
 		
-		var answers = document.getElementsByClassName("checkbox");	
+		var answers = document.getElementsByName("checkbox");	
 		var actuallPoint = 0;
 		var sumPoint = 0;
 		console.log("wielkość tablicy" + answers.length)

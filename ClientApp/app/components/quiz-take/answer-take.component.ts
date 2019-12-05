@@ -2,6 +2,8 @@
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { elementStart } from "@angular/core/src/render3/instructions";
+import { forEach } from "@angular/router/src/utils/collection";
+import { isNumber } from "util";
 
 @Component({
 	selector: "answer-take",
@@ -44,20 +46,74 @@ export class AnswerTakeComponent implements OnInit {
 
 		var ischecked = answer.getAttribute("data-ischecked");
 
-		console.log("WartośćIsChecked:" + ischecked)
+		if (ischecked == "false") {
+			console.log("IF");
+			answer.setAttribute("data-ischecked", "true");
+
+		}
+		else {
+			console.log("ELSE");
+			answer.setAttribute("data-ischecked", "false");
+		}
+
+		console.log(answer);
+	
+		var questionId = answer.getAttribute("data-questionId");
+
+		let a = document.getElementsByClassName(questionId);
+
+
+		
+	
+		Array.prototype.forEach.call(a, function(el: any){
+
+			console.log("Wartość z pętli:" + el.getAttribute("data-ischecked"));
+
+			if (el.getAttribute("data-ischecked") == "true") {
+				if (el == answer) {
+
+				}
+				else {
+					el.setAttribute("data-ischecked", "false");
+					el.checked = false;
+				}
+				
+			}
+		})
 
 		if (ischecked == "false") {
 			console.log("IF");
 			answer.setAttribute("data-ischecked", "true");
+			ischecked = answer.getAttribute("data-ischecked");
+			console.log("WartośćIsChecked:" + ischecked)
+
+
 		}
-		else
-		{
+		else {
 			console.log("ELSE");
 			answer.setAttribute("data-ischecked", "false");
+			ischecked = answer.getAttribute("data-ischecked");
+			console.log("WartośćIsChecked:" + ischecked)
+
 		}
-		console.log(id);
-		console.log(answer);
+		//for (var index in a) {
+
+		//	console.log(index);
+		//	if (+index )
+		//	{
+		//		console.log("index:" + index);
+		//		var ok = JSON.parse(document.getElementsByClassName(questionId)[index].getAttribute("data-ischecked"));
+		//		console.log(ok);
+		//	}
+		//	if (ok == "true") {
+		//		a[index].removeAttribute("Checked");
+		//	}
+
+		//}
+
+		
 	}
+	
 }
 
 
