@@ -73,7 +73,7 @@ import { AnswerTakeComponent } from './components/quiz-take/answer-take.componen
 		  { path: 'home', component: HomeComponent},
 		  { path: 'about', component: AboutComponent },
 		  { path: 'login', component: LoginComponent },
-		  { path: 'register', component: RegisterComponent},
+			{ path: 'register', component: RegisterComponent},
 		  {path: '**', component: PageNotFoundComponent}
       ])
 	],

@@ -19,9 +19,9 @@
 		</div>
 
 		<div class="form-group" [ngClass]="{ 'has-error has-feedback' : hasError('MinValue') }">
-			<label for="MinValue">Minimalna wartość punktowa:</label>
+			<label for="MinValue">Maksymalna wartość punktowa:</label>
 			<br />
-			<input type="text"
+			<input type="number"
 				   id="MinValue"
 				   formControlName="MinValue"
 				   name="MinValue"
@@ -31,8 +31,7 @@
 				  aria-hidden="true"></span>
 			<div *ngIf="hasError('MinValue')"
 				 class="help-block">
-
-				Wpisz wartość liczbową lub pozostaw pole pustym, aby dopasować się do wszystkiego mniejszego od MaxValue.
+				Wpisz wartość liczbową lub pozostaw pole pustym, aby dopasować się do wszystkiego większego do MaxValue.
 
 			</div>
 		</div>

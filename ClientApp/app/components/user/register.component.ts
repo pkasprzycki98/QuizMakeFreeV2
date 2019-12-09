@@ -33,7 +33,7 @@ export class RegisterComponent {
 				[Validators.required,
 				Validators.email]
 			],
-			Password: ['', Validators.required, Validators.pattern("^(?=.*[A-Z])(?=.*[!@#\$%\^&\*])(?=.{9,}")],
+			Password: ['', Validators.required],
 			PasswordConfirm: ['', Validators.required],
 			DisplayName: ['', Validators.required]
 		}, {

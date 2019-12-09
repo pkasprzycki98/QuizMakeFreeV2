@@ -48,8 +48,8 @@ export class ResultEditComponent {
 	createForm() {
 		this.form = this.fb.group({
 			Text: ['', Validators.required],
-			MinValue: ['', Validators.pattern(/^\d*$/)],
-			MaxValue: ['', Validators.pattern(/^\d*$/)]
+			MinValue: ['', Validators.pattern("^-?[0-9]*$")],
+			MaxValue: ['', Validators.pattern("^-?[0-9]*$")]
 		});
 	}
 

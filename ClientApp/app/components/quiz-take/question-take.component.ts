@@ -40,27 +40,4 @@ export class QuestionTakeComponent implements OnChanges {
 			
 		}, error => console.error(error));
 	}
-
-	sumPoint() {
-		
-		var answers = document.getElementsByName("checkbox");	
-		var actuallPoint = 0;
-		var sumPoint = 0;
-		console.log("wielkość tablicy" + answers.length)
-		for (var i = 0; i < answers.length; i++) {
-			var isChecked = answers[i].getAttribute("data-ischecked");
-			actuallPoint = +answers[i].getAttribute("data-answervalue");
-			console.log("punkty pobrane z atrubutu:" + actuallPoint);
-			console.log(isChecked);
-			if (isChecked == "true") {
-				console.log(true);				
-				sumPoint += actuallPoint;
-				console.log(sumPoint);
-
-			}
-
-		}
-
-		alert("Twoje punkty wynoszą:" + sumPoint);
-	}
 }
