@@ -2,7 +2,9 @@
 
 Jest to aplikacja stworzona przy pomocy książki Valerio de Sanctis ASP .Net Core i Angular. Dzięki niej poznałem podstawy .NET core i Angular
 
-Końcowy wygląd aplikacji
+Więcej można zobaczyć tutaj: https://www.youtube.com/watch?v=FWX_XAwaA5Q
+
+Końcowy wygląd aplikacji 
 Metoda generująca JWT Token
 ![Screenshot_3](https://user-images.githubusercontent.com/40517767/81760210-ef73ca80-94c6-11ea-8049-c8d941961ec5.jpg)
 Metoda odświeżająca JWT Token
